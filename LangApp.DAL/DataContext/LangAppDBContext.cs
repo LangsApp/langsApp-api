@@ -1,0 +1,27 @@
+﻿using Microsoft.EntityFrameworkCore;
+using LangApp.Core.Models;
+
+namespace LangApp.DAL.DataContext;
+
+internal class LangAppDBContext : DbContext
+{
+    public LangAppDBContext(DbContextOptions<LangAppDBContext> options) : base(options)
+    {
+    }
+
+    public DbSet<BaseWord> BaseWord { get; set; }
+    public DbSet<Category> Category { get; set; }
+    public DbSet<Languages> Languages { get; set; }
+    public DbSet<Progress> Progress { get; set; }
+    public DbSet<Stage> Stage { get; set; }
+    public DbSet<Translate> Translate { get; set; }
+    public DbSet<User> User { get; set; }
+
+
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LangAppDBContext).Assembly);
+        base.OnModelCreating(modelBuilder);
+    }
+}
