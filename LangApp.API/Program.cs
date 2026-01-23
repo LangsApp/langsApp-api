@@ -1,4 +1,5 @@
 using LangApp.API;
+using LangApp.BLL.Words.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.Add_API_DI(builder.Configuration);
+
+builder.Services.AddAutoMapper(typeof(WordsProfile));
 
 var app = builder.Build();
 
