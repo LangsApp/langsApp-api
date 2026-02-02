@@ -24,11 +24,11 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("BaseWordCategory", b =>
                 {
-                    b.Property<int>("BaseWordsId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("BaseWordsId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("CategoriesId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("BaseWordsId", "CategoriesId");
 
@@ -39,11 +39,9 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("LangApp.Core.Models.BaseWord", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("DisplayWord")
                         .HasMaxLength(100)
@@ -64,11 +62,9 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("LangApp.Core.Models.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -85,11 +81,9 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("LangApp.Core.Models.Languages", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LangCode")
                         .IsRequired()
@@ -111,20 +105,18 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("LangApp.Core.Models.Progress", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<Guid>("StageId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("StageId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WordId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("WordId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -140,11 +132,9 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("LangApp.Core.Models.Stage", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Order")
                         .HasColumnType("integer");
@@ -167,32 +157,30 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("LangApp.Core.Models.Translate", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BaseWordId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("BaseWordId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("DisplayTranslatedText")
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("LangCodeId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("LangCodeId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int?>("LanguagesId")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("LanguagesId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("NormalizedTranslatedText")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
-                    b.Property<int>("WordId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("WordId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -210,11 +198,9 @@ namespace LangApp.DAL.Migrations
 
             modelBuilder.Entity("LangApp.Core.Models.User", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()

@@ -1,4 +1,4 @@
-﻿using LangApp.Core.Models;
+using LangApp.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

@@ -8,7 +8,7 @@ namespace LangApp.Core.Models
 {
     public class BaseWord
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string NormalizedWord { get; set; } = string.Empty;
         public string? DisplayWord { get; set; } 
 

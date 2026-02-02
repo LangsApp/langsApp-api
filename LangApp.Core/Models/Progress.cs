@@ -8,10 +8,10 @@ namespace LangApp.Core.Models;
 
 public class Progress
 {
-    public int Id { get; set; }
-    public int UserId { get; set; }
-    public int WordId { get; set; }
-    public int StageId { get; set; }
+    public Guid Id { get; set; }
+    public Guid UserId { get; set; }
+    public Guid WordId { get; set; }
+    public Guid StageId { get; set; }
 
     public User? User { get; set; }
     public BaseWord? Word { get; set; }

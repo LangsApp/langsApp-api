@@ -5,9 +5,9 @@ namespace LangApp.Core.Models;
 
 public class Translate
 {
-    public int Id { get; set; }
-    public int WordId { get; set; }
-    public int LangCodeId { get; set; }
+    public Guid Id { get; set; }
+    public Guid WordId { get; set; }
+    public Guid LangCodeId { get; set; }
     public string NormalizedTranslatedText { get; set; } = string.Empty;
     public string? DisplayTranslatedText { get; set; }
     public BaseWord? Word { get; set; } 

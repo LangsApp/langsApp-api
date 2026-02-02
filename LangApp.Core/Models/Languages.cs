@@ -8,7 +8,7 @@ namespace LangApp.Core.Models;
 
 public class Languages
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public string LangCode { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
 

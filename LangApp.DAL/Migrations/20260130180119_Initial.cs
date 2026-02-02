@@ -1,13 +1,12 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace LangApp.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,8 +15,7 @@ namespace LangApp.DAL.Migrations
                 name: "BaseWord",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     NormalizedWord = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     DisplayWord = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true)
                 },
@@ -30,8 +28,7 @@ namespace LangApp.DAL.Migrations
                 name: "Category",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -43,8 +40,7 @@ namespace LangApp.DAL.Migrations
                 name: "Languages",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     LangCode = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
                     Name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false)
                 },
@@ -57,8 +53,7 @@ namespace LangApp.DAL.Migrations
                 name: "Stage",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     StageName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Order = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -71,8 +66,7 @@ namespace LangApp.DAL.Migrations
                 name: "User",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Login = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     Password = table.Column<string>(type: "text", nullable: false),
@@ -90,8 +84,8 @@ namespace LangApp.DAL.Migrations
                 name: "BaseWordCategory",
                 columns: table => new
                 {
-                    BaseWordsId = table.Column<int>(type: "integer", nullable: false),
-                    CategoriesId = table.Column<int>(type: "integer", nullable: false)
+                    BaseWordsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CategoriesId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,14 +108,13 @@ namespace LangApp.DAL.Migrations
                 name: "Translate",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WordId = table.Column<int>(type: "integer", nullable: false),
-                    LangCodeId = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    WordId = table.Column<Guid>(type: "uuid", nullable: false),
+                    LangCodeId = table.Column<Guid>(type: "uuid", nullable: false),
                     NormalizedTranslatedText = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     DisplayTranslatedText = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
-                    BaseWordId = table.Column<int>(type: "integer", nullable: true),
-                    LanguagesId = table.Column<int>(type: "integer", nullable: true)
+                    BaseWordId = table.Column<Guid>(type: "uuid", nullable: true),
+                    LanguagesId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -154,11 +147,10 @@ namespace LangApp.DAL.Migrations
                 name: "Progress",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    UserId = table.Column<int>(type: "integer", nullable: false),
-                    WordId = table.Column<int>(type: "integer", nullable: false),
-                    StageId = table.Column<int>(type: "integer", nullable: false)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    WordId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StageId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,9 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using LangApp.Core.Models;
 
 namespace LangApp.DAL.DataContext;
 
-internal class LangAppDBContext : DbContext
+public class LangAppDBContext : DbContext
 {
     public LangAppDBContext(DbContextOptions<LangAppDBContext> options) : base(options)
     {

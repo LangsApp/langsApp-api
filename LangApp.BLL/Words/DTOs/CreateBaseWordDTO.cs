@@ -9,5 +9,5 @@ namespace LangApp.BLL.Words.DTOs;
 public class CreateBaseWordDTO
 {
     public string NormalizedWord { get; set; } = null!;
-    public string DisplayedWord { get; set; } = null!;
+    public string DisplayWord { get; set; } = null!;
 }
