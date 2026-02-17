@@ -8,28 +8,12 @@ internal class UserConfig : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasKey(x => x.Id);
-
-        builder.HasIndex(x => new { x.Login, x.Email })
-               .IsUnique();
-
-        builder.HasIndex(u => u.PhoneNumber)
-               .IsUnique();
-
-        builder.Property(u => u.Name)
+        builder.Property(u => u.FirstName)
                .HasMaxLength(100)
                .IsRequired(false);
 
-        builder.Property(u => u.Email)
+        builder.Property(u => u.LastName)
                .HasMaxLength(100)
-               .IsRequired();
-
-        builder.Property(u => u.Login)
-               .HasMaxLength(50)
-               .IsRequired();
-
-        builder.Property(u => u.PhoneNumber)
-               .HasMaxLength(30)
                .IsRequired(false);
 
         builder.Property(u => u.CreatedAt)

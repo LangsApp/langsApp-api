@@ -1,4 +1,5 @@
 using LangApp.API;
+using LangApp.API.Auth;
 using LangApp.BLL.Words.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,7 +15,17 @@ builder.Services.Add_API_DI(builder.Configuration);
 
 builder.Services.AddAutoMapper(typeof(WordsProfile));
 
+builder.Services.Add_Identity_Configuration();
+
+builder.Services.Add_JWT_Configuration(builder.Configuration);
+
+
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    await IdentityBootstrapper.EnsureSuperAdminAsync(scope.ServiceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
