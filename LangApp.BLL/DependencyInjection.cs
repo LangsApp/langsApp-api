@@ -1,5 +1,7 @@
-﻿using MediatR.NotificationPublishers;
+﻿using LangApp.BLL.Auth.Interfaces;
+using MediatR.NotificationPublishers;
 using Microsoft.Extensions.DependencyInjection;
+using LangApp.BLL.Auth.Services;
 
 namespace LangApp.BLL;
 
@@ -12,7 +14,7 @@ public static class DependencyInjection
             configuration.RegisterServicesFromAssembly(typeof(DependencyInjection).Assembly);
             configuration.NotificationPublisher = new TaskWhenAllPublisher();
         });
-
+        services.AddScoped<IAuthService, AuthService>();
         return services;
     }
 }

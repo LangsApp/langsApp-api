@@ -9,13 +9,22 @@ namespace LangApp.API.Controllers.Accounts
     
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController(ISender sender) : ControllerBase
+    public class AccountController(ISender sender, ILogger<AccountController> _logger) : ControllerBase
     {
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDTO loginDTO)
         {
             var result = await sender.Send(new LoginUserCommand(loginDTO));
-            return Ok(result);
+            if (result != null)
+            {
+                _logger.LogInformation("User logged in successfully.");
+                return Ok(result);
+            }
+            else
+            {
+                _logger.LogWarning("Failed login attempt for email: {Email}", loginDTO.Email);
+                return Unauthorized();
+            }
         }
     }
 }

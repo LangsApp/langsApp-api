@@ -13,8 +13,8 @@ public static class IdentityBootstrapper
         var userManager = services.GetRequiredService<UserManager<User>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        var email = config["SuperAdmin:Email"];
-        var password = config["SuperAdmin:Password"];
+        var email = config["Credentials:SuperAdmin:Email"];
+        var password = config["Credentials:SuperAdmin:Password"];
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
@@ -40,7 +40,7 @@ public static class IdentityBootstrapper
                 UpdatedAt = DateTime.UtcNow
             };
             var result = await userManager.CreateAsync(user, password);
-            if (!result.Succeeded)
+            if (!result.Succeeded)/////////////////////ЗАКОМІТИТИ//////////////////////////
             {
                 throw new Exception("Failed to create SuperAdmin");
             }

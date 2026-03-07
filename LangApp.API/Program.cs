@@ -21,7 +21,6 @@ builder.Services.Add_JWT_Configuration(builder.Configuration);
 
 
 var app = builder.Build();
-
 using (var scope = app.Services.CreateScope())
 {
     await IdentityBootstrapper.EnsureSuperAdminAsync(scope.ServiceProvider);
