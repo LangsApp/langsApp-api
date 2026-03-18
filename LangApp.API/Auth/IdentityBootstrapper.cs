@@ -40,12 +40,22 @@ public static class IdentityBootstrapper
                 UpdatedAt = DateTime.UtcNow
             };
             var result = await userManager.CreateAsync(user, password);
-            if (!result.Succeeded)/////////////////////ЗАКОМІТИТИ//////////////////////////
+            if (!result.Succeeded)
             {
                 throw new Exception("Failed to create SuperAdmin");
             }
 
             await userManager.AddToRoleAsync(user, UserRoles.SuperAdmin);
+        }
+    }
+
+    public static async Task EnsureUserRoleAsync(IServiceProvider services)
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        if(!await roleManager.RoleExistsAsync(UserRoles.User))
+        {
+            await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
         }
     }
 }
