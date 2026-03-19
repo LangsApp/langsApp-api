@@ -22,7 +22,7 @@ public static class JWTConfiguration
             options.TokenValidationParameters = new TokenValidationParameters()
             { 
                 ValidateIssuer = true,
-                ValidateAudience = true,
+                ValidateAudience = false,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = configuration["JWT:Issuer"],

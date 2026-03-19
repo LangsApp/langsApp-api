@@ -13,8 +13,8 @@ public static class IdentityBootstrapper
         var userManager = services.GetRequiredService<UserManager<User>>();
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        var email = config["SuperAdmin:Email"];
-        var password = config["SuperAdmin:Password"];
+        var email = config["Credentials:SuperAdmin:Email"];
+        var password = config["Credentials:SuperAdmin:Password"];
 
         if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
         {
@@ -46,6 +46,16 @@ public static class IdentityBootstrapper
             }
 
             await userManager.AddToRoleAsync(user, UserRoles.SuperAdmin);
+        }
+    }
+
+    public static async Task EnsureUserRoleAsync(IServiceProvider services)
+    {
+        var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+        if(!await roleManager.RoleExistsAsync(UserRoles.User))
+        {
+            await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
         }
     }
 }
