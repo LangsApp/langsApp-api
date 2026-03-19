@@ -7,8 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 
 namespace LangApp.API.Controllers;
-
-[Authorize(Roles = UserRoles.SuperAdmin)]
+[Authorize(Roles = UserRoles.SuperAdmin)] 
 [Route("api/[controller]")]
 [ApiController]
 public class AdminWordsController(ISender sender, ILogger<AdminWordsController> _logger) : ControllerBase
