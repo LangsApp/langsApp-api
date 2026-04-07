@@ -11,5 +11,6 @@ public class WordsProfile : Profile
     {
         CreateMap<BaseWord, CreateBaseWordDTO>();
         CreateMap<CreateBaseWordDTO, BaseWord>();
+        CreateMap<BaseWord, AddWordsByCategoryDTO>();
     }
 }

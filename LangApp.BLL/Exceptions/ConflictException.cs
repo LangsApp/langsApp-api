@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangApp.BLL.Words.DTOs;
-
-public class CreateBaseWordDTO
+namespace LangApp.BLL.Exceptions
 {
-    public string NormalizedWord { get; set; } = null!;
+    public class ConflictException(string message) : Exception(message)
+    {
+    }
 }

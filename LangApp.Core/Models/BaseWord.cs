@@ -12,7 +12,7 @@ namespace LangApp.Core.Models
         public string NormalizedWord { get; set; } = string.Empty;
         public string? DisplayWord { get; set; } 
 
-        public IEnumerable<Translate>? Translates { get; set; } = [];
-        public IEnumerable<Category>? Categories { get; set; } = [];
+        public ICollection<Translate> Translates { get; set; } = [];
+        public ICollection<Category> Categories { get; set; } = [];
     }
 }

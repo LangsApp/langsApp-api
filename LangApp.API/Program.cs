@@ -1,5 +1,6 @@
 using LangApp.API;
 using LangApp.API.Auth;
+using LangApp.API.Extensions;
 using LangApp.BLL.Words.Mapping;
 using Microsoft.OpenApi.Models;
 
@@ -59,6 +60,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseExceptionHandlingMiddleware();
 
 app.UseHttpsRedirection();
 
