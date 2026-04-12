@@ -16,7 +16,7 @@ public class AddListWordsCommandHandler(IBaseWord baseWordRepo, ICategory catego
 {
     public async Task<WordsListResponseDTO> Handle(AddListWordsCommand request, CancellationToken cancellationToken)
     {
-        if (request.NewWords.CategoryName.IsNullOrEmpty())
+        if (string.IsNullOrWhiteSpace(request.NewWords.CategoryName))
         {
             throw new ArgumentException("Category name cannot be null or empty.");
         }
