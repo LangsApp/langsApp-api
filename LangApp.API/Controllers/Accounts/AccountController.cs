@@ -31,19 +31,19 @@ public class AccountController(ISender sender, ILogger<AccountController> _logge
 
     [AllowAnonymous]
     [HttpPost("Register")]
-    public async Task<IdentityResult> Register([FromBody] RegisterDTO registerDTO)
+    public async Task<IActionResult> Register([FromBody] RegisterDTO registerDTO)
     {
         var result = await sender.Send(new RegisterUserCommand(registerDTO));
         if (result.Succeeded)
         {
             _logger.LogInformation("User registered successfully with email: {Email}", registerDTO.Email);
-            return result;
+            return Ok(result);
         }
         else
         {
             _logger.LogWarning("Failed registration attempt for email: {Email}. Errors: {Errors}", 
                 registerDTO.Email, string.Join(", ", result.Errors.Select(e => e.Description)));
-            return result;
+            return BadRequest(result.Errors);
         }
     }
 }
