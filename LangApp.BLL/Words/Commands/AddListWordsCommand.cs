@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using LangApp.BLL.Exceptions;
 using LangApp.BLL.Words.DTOs;
-using LangApp.BLL.Words.Service;
+using LangApp.BLL.Words.Services;
 using LangApp.Core.Interfaces;
 using LangApp.Core.Models;
 using MediatR;
@@ -16,9 +16,16 @@ public class AddListWordsCommandHandler(IBaseWord baseWordRepo, ICategory catego
 {
     public async Task<WordsListResponseDTO> Handle(AddListWordsCommand request, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrWhiteSpace(request.NewWords.CategoryName))
+        if(!TextValidation.IsValidText(request.NewWords.CategoryName))
+        { 
+            throw new ArgumentException("Category name contains invalid characters.");
+        }
+        foreach (var word in request.NewWords.Words)
         {
-            throw new ArgumentException("Category name cannot be null or empty.");
+            if(!TextValidation.IsValidText(word.NormalizedWord))
+            { 
+                throw new ArgumentException($"Word '{word.NormalizedWord}' contains invalid characters.");
+            }
         }
         var category = await categoryRepo.GetCategoryByNameAsync(request.NewWords.CategoryName);
 
