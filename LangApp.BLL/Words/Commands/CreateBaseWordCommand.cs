@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
 using LangApp.BLL.Exceptions;
 using LangApp.BLL.Words.DTOs;
-using LangApp.BLL.Words.Service;
+using LangApp.BLL.Words.Services;
 using LangApp.Core.Interfaces;
 using LangApp.Core.Models;
 using MediatR;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace LangApp.BLL.Words.Commands;
 
@@ -16,6 +15,9 @@ public class CreateBaseWordCommandHandler(IBaseWord repository, IMapper mapper)
 {
     public async Task<BaseWord> Handle(CreateBaseWordCommand request, CancellationToken cancellationToken)
     {   
+        if(!TextValidation.IsValidText(request.NewWord.NormalizedWord))
+            throw new ArgumentException("Invalid word format.");
+
         var entity = mapper.Map<BaseWord>(request.NewWord);
         var noralizedWord = WordService.NormalizedWord(entity);
         var existingWord = await repository.GetBaseWordByNameAsync(noralizedWord.NormalizedWord);
