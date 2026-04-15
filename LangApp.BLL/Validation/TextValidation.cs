@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace LangApp.BLL.Words.Services;
+namespace LangApp.BLL.Validation;
 
 public class TextValidation
 {

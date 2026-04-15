@@ -11,9 +11,6 @@ public class WordService
 {
     public static BaseWord NormalizedWord(BaseWord word)
     {
-        if (string.IsNullOrWhiteSpace(word.NormalizedWord))
-            throw new ArgumentException("Word cannot be empty");
-
         var lower = word.NormalizedWord.ToLower();
 
         word.NormalizedWord = lower;
