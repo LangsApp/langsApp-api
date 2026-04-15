@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LangApp.BLL.Exceptions;
+using LangApp.BLL.Validation;
 using LangApp.BLL.Words.DTOs;
 using LangApp.BLL.Words.Services;
 using LangApp.Core.Interfaces;

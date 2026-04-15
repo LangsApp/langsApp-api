@@ -1,10 +1,9 @@
 using LangApp.BLL.Words.Commands;
-﻿using Microsoft.AspNetCore.Mvc;
 using LangApp.BLL.Words.DTOs;
 using LangApp.Core.Auth;
-using LangApp.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Mvc;
 
 
 namespace LangApp.API.Controllers;
@@ -44,5 +43,4 @@ public class AdminWordsController(ISender sender, ILogger<AdminWordsController> 
         _logger.LogInformation($"Words processed for category: {result.CategoryName}. Added: {result.Message}");
         return Ok(result);
     }
-
 }
