@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace LangApp.BLL.Translations.Commands
 {
-    public record CreateListTranslatesCommand() : IRequest<Translate>;
+    public record CreateListTranslatesCommand() : IRequest<bool>;
 
     public class CreateListTranslatesCommandHandler(ITranslate transRepo, ILangCode langCodeRepo, 
-        IBaseWord baseWordRepo, ILibreTranslateService libreTranslateService)
+        IBaseWord baseWordRepo, ILibreTranslateService libreTranslateService) : IRequestHandler<CreateListTranslatesCommand, bool>
     {
-        public async Task<bool> Handle(CancellationToken cancellationToken)
+        public async Task<bool> Handle(CreateListTranslatesCommand reqest, CancellationToken cancellationToken)
         {
             var existingTranslates = await transRepo.GetAllTranslatesAsync();
             var existingLangCodes = await langCodeRepo.GetAllLanguagesAsync();

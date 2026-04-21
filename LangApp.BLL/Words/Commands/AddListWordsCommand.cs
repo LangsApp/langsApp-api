@@ -17,16 +17,21 @@ public class AddListWordsCommandHandler(IBaseWord baseWordRepo, ICategory catego
 {
     public async Task<WordsListResponseDTO> Handle(AddListWordsCommand request, CancellationToken cancellationToken)
     {
-        if(!TextValidation.IsValidText(request.NewWords.CategoryName))
+        var validWords = new List<CreateBaseWordDTO>();
+        var invalidWords = new List<string>();
+
+        if (!TextValidation.IsValidText(request.NewWords.CategoryName))
         { 
             throw new ArgumentException("Category name contains invalid characters.");
         }
         foreach (var word in request.NewWords.Words)
-        {
-            if(!TextValidation.IsValidText(word.NormalizedWord))
-            { 
-                throw new ArgumentException($"Word '{word.NormalizedWord}' contains invalid characters.");
+        {// протестувати чи пропускає невірне слово
+            if (!TextValidation.IsValidText(word.NormalizedWord))
+            {
+                invalidWords.Add(word.NormalizedWord);
+                continue;
             }
+            validWords.Add(word);
         }
         var category = await categoryRepo.GetCategoryByNameAsync(request.NewWords.CategoryName);
 
@@ -40,7 +45,7 @@ public class AddListWordsCommandHandler(IBaseWord baseWordRepo, ICategory catego
             await categoryRepo.AddCategoryAsync(category);
         }
 
-        var words = mapper.Map<List<BaseWord>>(request.NewWords.Words);
+        var words = mapper.Map<List<BaseWord>>(validWords);
         
         var normalizedWords = words.Select(WordService.NormalizedWord).ToList();
 
@@ -67,9 +72,10 @@ public class AddListWordsCommandHandler(IBaseWord baseWordRepo, ICategory catego
         {
             CategoryName = category.Name,
             Words = [.. wordsToInsert.Select(w => w.NormalizedWord)],
-            Message = skipedWords.Count > 0
-            ? $"Some words were skipped because they already exist: {string.Join(", ", skipedWords)}"
+            Message = skipedWords.Count > 0 || invalidWords.Count > 0
+            ? $"Some words were skipped because they already exist: {string.Join(", ", skipedWords)}" +
+              $"Some words were skipped because they contain invalid characters: {string.Join(", ", invalidWords)}"
             : "All words added successfully."
-        }; ;
+        };
     }
 }
