@@ -7,7 +7,8 @@ namespace LangApp.BLL.Translations.Commands
 {
     public record CreateListTranslatesCommand() : IRequest<Translate>;
 
-    public class CreateListTranslatesCommandHandler(ITranslate transRepo, ILangCode langCodeRepo, IBaseWord baseWordRepo)
+    public class CreateListTranslatesCommandHandler(ITranslate transRepo, ILangCode langCodeRepo, 
+        IBaseWord baseWordRepo, ILibreTranslateService libreTranslateService)
     {
         public async Task<bool> Handle(CancellationToken cancellationToken)
         {
@@ -28,12 +29,20 @@ namespace LangApp.BLL.Translations.Commands
                     if (existingPairs.Contains((baseWord.Id, langCode.Id)))
                         continue;
 
+                    var translatedText = await libreTranslateService.TranslateAsync(
+                        baseWord.NormalizedWord,
+                        "en",
+                        langCode.LangCode,
+                        cancellationToken
+                        );
+
                     newTranslates.Add(new Translate
                     {//викликати libreTranslate для отримання перекладу
+                     // розібратись з тим, що  translatedText може бути null
                         WordId = baseWord.Id,
                         LangCodeId = langCode.Id,
-                        NormalizedTranslatedText = "",
-                        DisplayTranslatedText = ""
+                        NormalizedTranslatedText = translatedText!.ToLower(),
+                        DisplayTranslatedText = translatedText
                     });
                 }
             }

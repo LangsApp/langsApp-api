@@ -3,6 +3,7 @@ using LangApp.API.Auth;
 using LangApp.API.Extensions;
 using LangApp.BLL.LangCode.Mapping;
 using LangApp.BLL.Words.Mapping;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -41,7 +42,7 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.Add_API_DI(builder.Configuration);
 
-builder.Services.AddAutoMapper(typeof(WordsProfile), typeof(LangCodeProfile));
+builder.Services.AddAutoMapper(cfg => { }, typeof(WordsProfile), typeof(LangCodeProfile));
 
 builder.Services.Add_Identity_Configuration();
 
