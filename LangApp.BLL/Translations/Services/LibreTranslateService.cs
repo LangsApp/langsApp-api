@@ -13,13 +13,10 @@ namespace LangApp.BLL.Translations.Services
 {
     public class LibreTranslateService(HttpClient httpClient) : ILibreTranslateService
     {
-        // Додати перевірку на те що приходить із LibreTranslate
-        // Розібратися із "?" в сигнатурі методу
-        // Вирішити питання із кирилицею
         public async Task<string?> TranslateAsync(string text, string sourceLang, 
             string targetLang, CancellationToken cancellationToken)
         {
-            var response = await httpClient.PostAsJsonAsync("http://localhost:5000/trabslate",
+            var response = await httpClient.PostAsJsonAsync("http://localhost:5000/translate",
                 new
                 {
                     q = text,

@@ -38,7 +38,6 @@ namespace LangApp.BLL.Translations.Commands
 
                     newTranslates.Add(new Translate
                     {//викликати libreTranslate для отримання перекладу
-                     // розібратись з тим, що  translatedText може бути null
                         WordId = baseWord.Id,
                         LangCodeId = langCode.Id,
                         NormalizedTranslatedText = translatedText!.ToLower(),
@@ -48,7 +47,7 @@ namespace LangApp.BLL.Translations.Commands
             }
             if (newTranslates.Count > 0)
             {
-                //await transRepo.AddRangeAsync(newTranslates);
+                await transRepo.AddListTranslatesAsync(newTranslates);
             }
             return true;
         }

@@ -25,7 +25,7 @@ public class AddListWordsCommandHandler(IBaseWord baseWordRepo, ICategory catego
             throw new ArgumentException("Category name contains invalid characters.");
         }
         foreach (var word in request.NewWords.Words)
-        {// протестувати чи пропускає невірне слово
+        {
             if (!TextValidation.IsValidText(word.NormalizedWord))
             {
                 invalidWords.Add(word.NormalizedWord);

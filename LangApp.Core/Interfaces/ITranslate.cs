@@ -10,5 +10,6 @@ namespace LangApp.Core.Interfaces
     public interface ITranslate
     {
         Task<ICollection<Translate>> GetAllTranslatesAsync();
+        Task<List<Translate>> AddListTranslatesAsync(List<Translate> newTranslates);
     }
 }

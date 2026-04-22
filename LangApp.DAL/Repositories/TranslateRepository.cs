@@ -16,4 +16,11 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslate
     {
         return await dBContext.Translate.ToListAsync(); 
     }
+
+    public async Task<List<Translate>> AddListTranslatesAsync(List<Translate> newTranslates)
+    {
+        dBContext.Translate.AddRange(newTranslates);
+        await dBContext.SaveChangesAsync();
+        return newTranslates;
+    }
 }
