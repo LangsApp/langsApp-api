@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangApp.Core.Interfaces
+namespace LangApp.Core.Interfaces.Repository
 {
-    public interface ITranslate
+    public interface ITranslateRepository
     {
         Task<ICollection<Translate>> GetAllTranslatesAsync();
         Task<List<Translate>> AddListTranslatesAsync(List<Translate> newTranslates);

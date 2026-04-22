@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.Words.Services;
 
-public class WordService
+public static class WordService
 {
     public static BaseWord NormalizedWord(BaseWord word)
     {

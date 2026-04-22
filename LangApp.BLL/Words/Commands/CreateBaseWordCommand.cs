@@ -3,7 +3,7 @@ using LangApp.BLL.Exceptions;
 using LangApp.BLL.Validation;
 using LangApp.BLL.Words.DTOs;
 using LangApp.BLL.Words.Services;
-using LangApp.Core.Interfaces;
+using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using MediatR;
 
@@ -11,7 +11,7 @@ namespace LangApp.BLL.Words.Commands;
 
 public record CreateBaseWordCommand(CreateBaseWordDTO NewWord) : IRequest<BaseWord>;
 
-public class CreateBaseWordCommandHandler(IBaseWord repository, IMapper mapper) 
+public class CreateBaseWordCommandHandler(IBaseWordRepository repository, IMapper mapper) 
     : IRequestHandler<CreateBaseWordCommand, BaseWord>
 {
     public async Task<BaseWord> Handle(CreateBaseWordCommand request, CancellationToken cancellationToken)

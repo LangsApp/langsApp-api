@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangApp.Core.Interfaces
+namespace LangApp.Core.Interfaces.Services
 {
-    public interface ILibreTranslateService
+    public interface ITranslateService
     {
         Task<string?>  TranslateAsync(string text, string sourceLang, 
             string targetLang, CancellationToken cancellationToken);

@@ -1,4 +1,4 @@
-﻿using LangApp.Core.Interfaces;
+﻿using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using LangApp.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LangApp.DAL.Repositories;
 
-public class TranslateRepository(LangAppDBContext dBContext) : ITranslate
+public class TranslateRepository(LangAppDBContext dBContext) : ITranslateRepository
 {
     public async Task<ICollection<Translate>> GetAllTranslatesAsync()
     {

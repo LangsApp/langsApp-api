@@ -2,8 +2,8 @@
 using MediatR.NotificationPublishers;
 using Microsoft.Extensions.DependencyInjection;
 using LangApp.BLL.Auth.Services;
-using LangApp.Core.Interfaces;
 using LangApp.BLL.Translations.Services;
+using LangApp.Core.Interfaces.Services;
 
 namespace LangApp.BLL;
 
@@ -17,7 +17,7 @@ public static class DependencyInjection
             configuration.NotificationPublisher = new TaskWhenAllPublisher();
         });
         services.AddScoped<IAuthService, AuthService>();
-        services.AddHttpClient<ILibreTranslateService, LibreTranslateService>();
+        services.AddHttpClient<ITranslateService, TranslateService>();
         return services;
     }
 }

@@ -1,4 +1,4 @@
-﻿using LangApp.Core.Interfaces;
+﻿using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Options;
 using LangApp.DAL.DataContext;
 using LangApp.DAL.Repositories;
@@ -19,10 +19,10 @@ public static class DependencyInjection
                 .Value.DefaultConnection);
         });
         // Register repositories
-        services.AddScoped<IBaseWord, BaseWordRepository>();
-        services.AddScoped<ICategory, CategoryRepository>();
-        services.AddScoped<ILangCode, LangCodeRepository>();
-        services.AddScoped<ITranslate, TranslateRepository>();
+        services.AddScoped<IBaseWordRepository, BaseWordRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<ILangCodeRepository, LangCodeRepository>();
+        services.AddScoped<ITranslateRepository, TranslateRepository>();
         //services.AddScoped<IAuthService, AuthService>();
         //services.AddScoped<ICategoryRepository, CategoryRepository>();
         //services.AddScoped<ILanguagesRepository, LanguagesRepository>();

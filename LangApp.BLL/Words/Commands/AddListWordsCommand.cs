@@ -3,7 +3,7 @@ using LangApp.BLL.Exceptions;
 using LangApp.BLL.Validation;
 using LangApp.BLL.Words.DTOs;
 using LangApp.BLL.Words.Services;
-using LangApp.Core.Interfaces;
+using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
@@ -12,7 +12,7 @@ namespace LangApp.BLL.Words.Commands;
 // TODO: Replace with batch processing for large datasets
 public record AddListWordsCommand(AddWordsByCategoryDTO NewWords) : IRequest<WordsListResponseDTO>;
 
-public class AddListWordsCommandHandler(IBaseWord baseWordRepo, ICategory categoryRepo, IMapper mapper)
+public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICategoryRepository categoryRepo, IMapper mapper)
     : IRequestHandler<AddListWordsCommand, WordsListResponseDTO>
 {
     public async Task<WordsListResponseDTO> Handle(AddListWordsCommand request, CancellationToken cancellationToken)

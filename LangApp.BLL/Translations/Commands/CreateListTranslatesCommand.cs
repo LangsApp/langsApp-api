@@ -1,4 +1,5 @@
-﻿using LangApp.Core.Interfaces;
+﻿using LangApp.Core.Interfaces.Repository;
+using LangApp.Core.Interfaces.Services;
 using LangApp.Core.Models;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -7,8 +8,8 @@ namespace LangApp.BLL.Translations.Commands
 {
     public record CreateListTranslatesCommand() : IRequest<bool>;
 
-    public class CreateListTranslatesCommandHandler(ITranslate transRepo, ILangCode langCodeRepo, 
-        IBaseWord baseWordRepo, ILibreTranslateService libreTranslateService) : IRequestHandler<CreateListTranslatesCommand, bool>
+    public class CreateListTranslatesCommandHandler(ITranslateRepository transRepo, ILangCodeRepository langCodeRepo, 
+        IBaseWordRepository baseWordRepo, ITranslateService libreTranslateService) : IRequestHandler<CreateListTranslatesCommand, bool>
     {
         public async Task<bool> Handle(CreateListTranslatesCommand reqest, CancellationToken cancellationToken)
         {

@@ -1,6 +1,6 @@
 ﻿using LangApp.BLL.Translations.DTOs;
 using LangApp.BLL.Validation;
-using LangApp.Core.Interfaces;
+using LangApp.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.Translations.Services
 {
-    public class LibreTranslateService(HttpClient httpClient) : ILibreTranslateService
+    public class TranslateService(HttpClient httpClient) : ITranslateService
     {
         public async Task<string?> TranslateAsync(string text, string sourceLang, 
             string targetLang, CancellationToken cancellationToken)
