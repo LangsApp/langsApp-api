@@ -12,5 +12,5 @@ public class Languages
     public string LangCode { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
 
-    public IEnumerable<Translate>? Translates { get; set; } = new List<Translate>();
+    public ICollection<Translate>? Translates { get; set; } = new List<Translate>();
 }

@@ -23,7 +23,7 @@ public class LangAppDBContext : IdentityDbContext<User>
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LangAppDBContext).Assembly);
         base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(LangAppDBContext).Assembly);
     }
 }

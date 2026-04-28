@@ -10,7 +10,7 @@ internal class TranslateConfig : IEntityTypeConfiguration<Translate>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasIndex(t => new { t.WordId, t.LangCodeId })
+        builder.HasIndex(t => new { t.WordId, t.LanguageId })
                .IsUnique();
 
         builder.Property(x => x.NormalizedTranslatedText)
@@ -21,14 +21,14 @@ internal class TranslateConfig : IEntityTypeConfiguration<Translate>
                .HasMaxLength(100)
                .IsRequired(false);
 
-        builder.HasOne(t => t.Word)
-               .WithMany()
+        builder.HasOne(w => w.Word)
+               .WithMany(t => t.Translates)
                .HasForeignKey(t => t.WordId)
                .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasOne(t => t.Language)
-               .WithMany()
-               .HasForeignKey(t => t.LangCodeId)
+        builder.HasOne(l => l.Language)
+               .WithMany(t => t.Translates)
+               .HasForeignKey(t => t.LanguageId)
                .OnDelete(DeleteBehavior.Cascade);
     }
 }
