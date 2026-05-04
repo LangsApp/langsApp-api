@@ -2,25 +2,26 @@
 using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Interfaces.Services;
 using LangApp.Core.Models;
+using LangApp.BLL.Translations.DTOs;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.Extensions.Logging;
 
 namespace LangApp.BLL.Translations.Commands
 {
-    public record CreateListTranslatesCommand() : IRequest<bool>;
+    public record CreateListTranslatesCommand() : IRequest<CreateListTranslatesResponseDTO>;
 
     public class CreateListTranslatesCommandHandler(ITranslateRepository transRepo, ILangCodeRepository langCodeRepo, 
         IBaseWordRepository baseWordRepo, ITranslateService libreTranslateService,
-        ILogger<CreateListTranslatesCommand> logger) : IRequestHandler<CreateListTranslatesCommand, bool>
+        ILogger<CreateListTranslatesCommand> logger) : IRequestHandler<CreateListTranslatesCommand, CreateListTranslatesResponseDTO>
     {
-        public async Task<bool> Handle(CreateListTranslatesCommand reqest, CancellationToken cancellationToken)
+        public async Task<CreateListTranslatesResponseDTO> Handle(CreateListTranslatesCommand reqest, CancellationToken cancellationToken)
         {
             var existingTranslates = await transRepo.GetAllTranslatesAsync();
             var existingLangCodes = await langCodeRepo.GetAllLanguagesAsync();
             var existingBaseWords = await baseWordRepo.GetAllBaseWordsAsync();
 
-            var skippedPairs = new Dictionary<string, string>();
+            var skippedPairs = new HashSet<(string Word, string LangCode)>();
 
             var existingPairs = existingTranslates
             .Select(t => (t.WordId, t.LanguageId))
@@ -47,12 +48,12 @@ namespace LangApp.BLL.Translations.Commands
 
                     if(!normalizedTranslatedText)
                     {
-                        skippedPairs.Add(baseWord.NormalizedWord, langCode.Name);
+                        skippedPairs.Add((baseWord.NormalizedWord, langCode.Name));
                         continue;
                     }
 
                     newTranslates.Add(new Translate
-                    {//викликати libreTranslate для отримання перекладу
+                    {
                         WordId = baseWord.Id,
                         LanguageId = langCode.Id,
                         NormalizedTranslatedText = translatedText!.ToLower(),
@@ -60,14 +61,26 @@ namespace LangApp.BLL.Translations.Commands
                     });
                 }
             }
+            var skippedMessage = string.Join(", ", skippedPairs.Select(p => $"({p.Word} - {p.LangCode})"));
             if (newTranslates.Count > 0)
             {
                 await transRepo.AddListTranslatesAsync(newTranslates);
                logger.LogInformation("Created {Count} new translates", newTranslates.Count);    
-                return true;
+                return new CreateListTranslatesResponseDTO { 
+                    Count = newTranslates.Count,
+                    Message = skippedPairs.Count == 0
+                    ? "Created new translates"
+                    : $"Created new translates, skipped pairs {skippedMessage}"
+                };
             }
             logger.LogInformation("No new translates were created");
-            return false;
+            return new CreateListTranslatesResponseDTO
+            {
+                Count = newTranslates.Count,
+                Message = skippedPairs.Count == 0
+                ? $"No new translates were created"
+                : $"No new translates were created, skipped pairs {skippedMessage}"
+            };
         }
     }
 

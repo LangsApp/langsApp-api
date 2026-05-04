@@ -16,12 +16,12 @@ public class AdminTranslatesController(ISender sender, ILogger<AdminTranslatesCo
     public async Task<IActionResult> CreateListTranslatesAsync()
     {
         var result = await sender.Send(new CreateListTranslatesCommand());
-        if (result is false)
+        if (result is null)
         {
             logger.LogError("Failed to create list of translates.");
             return BadRequest("Failed to create list of translates.");
         }
-        logger.LogInformation("Successfully created list of translates.");
+        logger.LogInformation(result.Message);
         return Ok(result);
     }
 }
