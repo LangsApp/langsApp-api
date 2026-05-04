@@ -1,13 +1,11 @@
-﻿
-
-using LangApp.Core.Interfaces;
+﻿using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using LangApp.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
 
 namespace LangApp.DAL.Repositories;
 
-public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWord
+public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWordRepository
 {
 
     public async Task<BaseWord> CreateBaseWordAsync(BaseWord newWord)

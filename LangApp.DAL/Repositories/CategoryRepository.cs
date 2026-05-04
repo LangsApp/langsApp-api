@@ -1,4 +1,4 @@
-﻿using LangApp.Core.Interfaces;
+﻿using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using LangApp.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace LangApp.DAL.Repositories;
 
-public class CategoryRepository(LangAppDBContext dbContext) : ICategory
+public class CategoryRepository(LangAppDBContext dbContext) : ICategoryRepository
 {
     public async Task<Category> AddCategoryAsync(Category newCategory)
     {

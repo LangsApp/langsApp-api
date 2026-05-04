@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangApp.Core.Interfaces
+namespace LangApp.Core.Interfaces.Repository
 {
-    public interface ILangCode
+    public interface ILangCodeRepository
     {
         Task<Languages> CreateLanguageAsync(Languages language);
         Task<ICollection<Languages>> GetAllLanguagesAsync();

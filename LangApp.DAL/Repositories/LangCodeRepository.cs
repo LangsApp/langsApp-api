@@ -1,4 +1,4 @@
-﻿using LangApp.Core.Interfaces;
+﻿using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using LangApp.DAL.DataContext;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace LangApp.DAL.Repositories
 {
-    public class LangCodeRepository(LangAppDBContext dbContext, ILogger<LangCodeRepository> _logger) : ILangCode
+    public class LangCodeRepository(LangAppDBContext dbContext, ILogger<LangCodeRepository> _logger) : ILangCodeRepository
     {
         public async Task<Languages> CreateLanguageAsync(Languages newLanguage)
         {

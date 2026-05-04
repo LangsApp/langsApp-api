@@ -4,15 +4,15 @@ using LangApp.BLL.LangCode.Services;
 using LangApp.BLL.Validation;
 using LangApp.Core.Models;
 using MediatR;
-using LangApp.Core.Interfaces;
 using LangApp.BLL.Exceptions;
 using Microsoft.Extensions.Logging;
+using LangApp.Core.Interfaces.Repository;
 
 namespace LangApp.BLL.LangCode.Commands;
 
 public record CreateLanguageCodeCommand(CreateLangCodeDTO NewLangCode) : IRequest<Languages>;
 
-public class CreateLanguageCommandHandler(ILangCode repository, IMapper mapper) 
+public class CreateLanguageCommandHandler(ILangCodeRepository repository, IMapper mapper) 
     : IRequestHandler<CreateLanguageCodeCommand, Languages>
 {
     public async Task<Languages> Handle(CreateLanguageCodeCommand request, CancellationToken cancellationToken)
