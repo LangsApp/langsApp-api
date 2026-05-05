@@ -17,18 +17,20 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
 {
     public async Task<WordsListResponseDTO> Handle(AddListWordsCommand request, CancellationToken cancellationToken)
     {
-        var validWords = new List<CreateBaseWordDTO>();
+        var validWords = new List<string>();
         var invalidWords = new List<string>();
+
+        var inputWords = request.NewWords.Words.Select(w => w.NormalizedWord).Distinct().ToList();
 
         if (!TextValidation.IsValidText(request.NewWords.CategoryName))
         { 
             throw new ArgumentException("Category name contains invalid characters.");
         }
-        foreach (var word in request.NewWords.Words)
+        foreach (var word in inputWords)
         {
-            if (!TextValidation.IsValidText(word.NormalizedWord))
+            if (!TextValidation.IsValidText(word))
             {
-                invalidWords.Add(word.NormalizedWord);
+                invalidWords.Add(word);
                 continue;
             }
             validWords.Add(word);
@@ -46,10 +48,15 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
         }
 
         //var words = mapper.Map<List<BaseWord>>(validWords);
+        if(validWords.Count == 0)
+        {
+            throw new ArgumentException("No valid words to add.");
+        }
+
         var words = new List<BaseWord>(
-            validWords.Select(w => new BaseWord
+            validWords.Select(word => new BaseWord
             {
-                NormalizedWord = w.NormalizedWord
+                NormalizedWord = word
             }));
         
         var normalizedWords = words.Select(WordService.NormalizedWord).ToList();
