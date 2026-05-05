@@ -28,7 +28,15 @@ namespace LangApp.BLL.Translations.Commands
             .ToHashSet();
 
             var newTranslates = new List<Translate>();
-
+            if(existingLangCodes.Count == 0 || existingBaseWords.Count == 0)
+            {
+                logger.LogInformation("No new translates were created because there are no base words or language codes");
+                return new CreateListTranslatesResponseDTO
+                {
+                    Count = 0,
+                    Message = "No new translates were created because there are no base words or language codes"
+                };
+            }
             foreach (var baseWord in existingBaseWords)
             {
                 foreach (var langCode in existingLangCodes)
