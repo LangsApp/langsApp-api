@@ -10,5 +10,7 @@ namespace LangApp.Core.Interfaces.Services
     {
         Task<string?>  TranslateAsync(string text, string sourceLang, 
             string targetLang, CancellationToken cancellationToken);
+
+        Task<List<string>> GetSupportedLanguagesAsync(CancellationToken cancellationToken);
     }
 }
