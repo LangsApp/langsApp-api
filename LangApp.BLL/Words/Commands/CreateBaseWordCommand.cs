@@ -11,7 +11,7 @@ namespace LangApp.BLL.Words.Commands;
 
 public record CreateBaseWordCommand(CreateBaseWordDTO NewWord) : IRequest<BaseWord>;
 
-public class CreateBaseWordCommandHandler(IBaseWordRepository repository, IMapper mapper) 
+public class CreateBaseWordCommandHandler(IBaseWordRepository repository) 
     : IRequestHandler<CreateBaseWordCommand, BaseWord>
 {
     public async Task<BaseWord> Handle(CreateBaseWordCommand request, CancellationToken cancellationToken)
@@ -19,7 +19,11 @@ public class CreateBaseWordCommandHandler(IBaseWordRepository repository, IMappe
         if(!TextValidation.IsValidText(request.NewWord.NormalizedWord))
             throw new ArgumentException("Invalid word format.");
 
-        var entity = mapper.Map<BaseWord>(request.NewWord);
+        //var entity = mapper.Map<BaseWord>(request.NewWord);
+        var entity = new BaseWord
+        {
+            NormalizedWord = request.NewWord.NormalizedWord
+        };
         var noralizedWord = WordService.NormalizedWord(entity);
         var existingWord = await repository.GetBaseWordByNameAsync(noralizedWord.NormalizedWord);
         if (existingWord != null)

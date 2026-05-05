@@ -12,7 +12,7 @@ namespace LangApp.BLL.Words.Commands;
 // TODO: Replace with batch processing for large datasets
 public record AddListWordsCommand(AddWordsByCategoryDTO NewWords) : IRequest<WordsListResponseDTO>;
 
-public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICategoryRepository categoryRepo, IMapper mapper)
+public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICategoryRepository categoryRepo)
     : IRequestHandler<AddListWordsCommand, WordsListResponseDTO>
 {
     public async Task<WordsListResponseDTO> Handle(AddListWordsCommand request, CancellationToken cancellationToken)
@@ -45,7 +45,12 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
             await categoryRepo.AddCategoryAsync(category);
         }
 
-        var words = mapper.Map<List<BaseWord>>(validWords);
+        //var words = mapper.Map<List<BaseWord>>(validWords);
+        var words = new List<BaseWord>(
+            validWords.Select(w => new BaseWord
+            {
+                NormalizedWord = w.NormalizedWord
+            }));
         
         var normalizedWords = words.Select(WordService.NormalizedWord).ToList();
 
