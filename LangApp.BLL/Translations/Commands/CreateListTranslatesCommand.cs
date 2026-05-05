@@ -23,6 +23,8 @@ namespace LangApp.BLL.Translations.Commands
 
             var skippedPairs = new HashSet<(string Word, string LangCode)>();
 
+            var skippedCodes = new HashSet<string>();
+
             var existingPairs = existingTranslates
             .Select(t => (t.WordId, t.LanguageId))
             .ToHashSet();
@@ -37,12 +39,21 @@ namespace LangApp.BLL.Translations.Commands
                     Message = "No new translates were created because there are no base words or language codes"
                 };
             }
+
+            var codes = await libreTranslateService.GetSupportedLanguagesAsync(cancellationToken);
+
             foreach (var baseWord in existingBaseWords)
             {
                 foreach (var langCode in existingLangCodes)
                 {
                     if (existingPairs.Contains((baseWord.Id, langCode.Id)))
                         continue;
+
+                    if(!codes.Contains(langCode.LangCode))
+                    {
+                        skippedCodes.Add(langCode.LangCode);
+                        continue;
+                    }
 
                     var translatedText = await libreTranslateService.TranslateAsync(
                         baseWord.NormalizedWord,
@@ -77,8 +88,8 @@ namespace LangApp.BLL.Translations.Commands
                 return new CreateListTranslatesResponseDTO { 
                     Count = newTranslates.Count,
                     Message = skippedPairs.Count == 0
-                    ? "Created new translates"
-                    : $"Created new translates, skipped pairs {skippedMessage}"
+                    ? $"Created new translates\n skipped codes {string.Join(", ", skippedCodes)}"
+                    : $"Created new translates, skipped pairs {skippedMessage}\n skipped codes {string.Join(", ", skippedCodes)}"
                 };
             }
             logger.LogInformation("No new translates were created");
@@ -86,8 +97,9 @@ namespace LangApp.BLL.Translations.Commands
             {
                 Count = newTranslates.Count,
                 Message = skippedPairs.Count == 0
-                ? $"No new translates were created"
-                : $"No new translates were created, skipped pairs {skippedMessage}"
+                ? $"No new translates were created, skipped codes {string.Join(", ", skippedCodes)}"
+                : $"No new translates were created, " +
+                $"skipped pairs {skippedMessage}\n skipped codes {string.Join(", ", skippedCodes)}"
             };
         }
     }
