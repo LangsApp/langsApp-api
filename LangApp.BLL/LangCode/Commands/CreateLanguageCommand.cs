@@ -12,7 +12,7 @@ namespace LangApp.BLL.LangCode.Commands;
 
 public record CreateLanguageCodeCommand(CreateLangCodeDTO NewLangCode) : IRequest<Languages>;
 
-public class CreateLanguageCommandHandler(ILangCodeRepository repository, IMapper mapper) 
+public class CreateLanguageCommandHandler(ILangCodeRepository repository) 
     : IRequestHandler<CreateLanguageCodeCommand, Languages>
 {
     public async Task<Languages> Handle(CreateLanguageCodeCommand request, CancellationToken cancellationToken)
@@ -24,7 +24,12 @@ public class CreateLanguageCommandHandler(ILangCodeRepository repository, IMappe
             throw new ArgumentException("Invalid language name or code.");
         }
 
-        var entity = mapper.Map<Languages>(request.NewLangCode);
+        //var entity = mapper.Map<Languages>(request.NewLangCode);
+        var entity = new Languages
+        {
+            Name = request.NewLangCode.Name,
+            LangCode = request.NewLangCode.LangCode
+        };
 
         var normalizedLangCode = LangCodeService.NormalizeLanguage(entity);
 
