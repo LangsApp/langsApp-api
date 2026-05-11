@@ -64,8 +64,9 @@ namespace LangApp.BLL.Translations.Commands
 
 
                     var normalizedTranslatedText = TextValidation.IsValidText(translatedText!);
+                  
 
-                    if(!normalizedTranslatedText)
+                    if (!normalizedTranslatedText)
                     {
                         skippedPairs.Add((baseWord.NormalizedWord, langCode.Name));
                         continue;
