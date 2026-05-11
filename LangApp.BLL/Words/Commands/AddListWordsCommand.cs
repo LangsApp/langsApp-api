@@ -17,15 +17,17 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
 {
     public async Task<WordsListResponseDTO> Handle(AddListWordsCommand request, CancellationToken cancellationToken)
     {
+        if (!TextValidation.IsValidText(request.NewWords.CategoryName))
+        {
+            throw new ArgumentException("Category name contains invalid characters.");
+        }
+
         var validWords = new List<string>();
         var invalidWords = new List<string>();
 
         var inputWords = request.NewWords.Words.Select(w => w.NormalizedWord).Distinct().ToList();
 
-        if (!TextValidation.IsValidText(request.NewWords.CategoryName))
-        { 
-            throw new ArgumentException("Category name contains invalid characters.");
-        }
+        
         foreach (var word in inputWords)
         {
             if (!TextValidation.IsValidText(word))
