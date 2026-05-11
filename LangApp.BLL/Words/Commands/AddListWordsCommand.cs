@@ -80,13 +80,24 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
         
         await baseWordRepo.AddListWordsAsync(wordsToInsert);
 
+        var message = new List<string>();
+
+        if(skipedWords.Count > 0)
+        {
+            message.Add($"Some words were skipped because they already exist: {string.Join(", ", skipedWords)}\n");
+        }
+
+        if(invalidWords.Count > 0)
+        {
+            message.Add($"Some words were skipped because they contain invalid characters:" +
+                $" {string.Join(", ", invalidWords)}");
+        }    
+
         return new WordsListResponseDTO
         {
             CategoryName = category.Name,
             Words = [.. wordsToInsert.Select(w => w.NormalizedWord)],
-            Message = skipedWords.Count > 0 || invalidWords.Count > 0
-            ? $"Some words were skipped because they already exist: {string.Join(", ", skipedWords)}" +
-              $"Some words were skipped because they contain invalid characters: {string.Join(", ", invalidWords)}"
+            Message = message.Count > 0 ? string.Join(" ", message)
             : "All words added successfully."
         };
     }
