@@ -4,6 +4,7 @@ using LangApp.BLL.Validation;
 using LangApp.BLL.Words.DTOs;
 using LangApp.BLL.Words.Services;
 using LangApp.Core.Interfaces.Repository;
+using LangApp.Core.Interfaces.Services;
 using LangApp.Core.Models;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
@@ -60,8 +61,16 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
             {
                 NormalizedWord = word
             }));
-        
-        var normalizedWords = words.Select(WordService.NormalizedWord).ToList();
+        //var normalizedWords = words.Select(WordService.NormalizedWord).ToList();
+        var normalizedWords = words.Select(word =>
+        {
+            word.NormalizedWord =
+            TextNormalizer.ToNormalized(word.NormalizedWord);
+
+            word.DisplayWord =
+            TextNormalizer.ToDisplay(word.NormalizedWord);
+            return word;
+        }).ToList();
 
         var existWords = await baseWordRepo.GetAllNormalizedWordsAsync();
 
