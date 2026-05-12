@@ -2,8 +2,8 @@
 using LangApp.BLL.Exceptions;
 using LangApp.BLL.Validation;
 using LangApp.BLL.Words.DTOs;
-using LangApp.BLL.Words.Services;
 using LangApp.Core.Interfaces.Repository;
+using LangApp.Core.Interfaces.Services;
 using LangApp.Core.Models;
 using MediatR;
 using Microsoft.IdentityModel.Tokens;
@@ -55,17 +55,17 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
             throw new ArgumentException("No valid words to add.");
         }
 
-        var words = new List<BaseWord>(
+        var normalizedWords = new List<BaseWord>(
             validWords.Select(word => new BaseWord
             {
-                NormalizedWord = word
+                NormalizedWord = TextNormalizer.ToNormalized(word),
+                DisplayWord = TextNormalizer.ToDisplay(word)
             }));
-        
-        var normalizedWords = words.Select(WordService.NormalizedWord).ToList();
 
         var existWords = await baseWordRepo.GetAllNormalizedWordsAsync();
 
         var wordsToInsert = normalizedWords.Where(w => !existWords.Contains(w.NormalizedWord)).ToList();
+
 
         var skipedWords = normalizedWords.Where(w => existWords.Contains(w.NormalizedWord))
                                          .Select(w => w.NormalizedWord).ToList();
