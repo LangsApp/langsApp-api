@@ -56,25 +56,17 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
             throw new ArgumentException("No valid words to add.");
         }
 
-        var words = new List<BaseWord>(
+        var normalizedWords = new List<BaseWord>(
             validWords.Select(word => new BaseWord
             {
-                NormalizedWord = word
+                NormalizedWord = TextNormalizer.ToNormalized(word),
+                DisplayWord = TextNormalizer.ToDisplay(word)
             }));
-        //var normalizedWords = words.Select(WordService.NormalizedWord).ToList();
-        var normalizedWords = words.Select(word =>
-        {
-            word.NormalizedWord =
-            TextNormalizer.ToNormalized(word.NormalizedWord);
-
-            word.DisplayWord =
-            TextNormalizer.ToDisplay(word.NormalizedWord);
-            return word;
-        }).ToList();
 
         var existWords = await baseWordRepo.GetAllNormalizedWordsAsync();
 
         var wordsToInsert = normalizedWords.Where(w => !existWords.Contains(w.NormalizedWord)).ToList();
+
 
         var skipedWords = normalizedWords.Where(w => existWords.Contains(w.NormalizedWord))
                                          .Select(w => w.NormalizedWord).ToList();
