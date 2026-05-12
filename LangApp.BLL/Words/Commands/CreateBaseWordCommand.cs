@@ -2,8 +2,8 @@
 using LangApp.BLL.Exceptions;
 using LangApp.BLL.Validation;
 using LangApp.BLL.Words.DTOs;
-using LangApp.BLL.Words.Services;
 using LangApp.Core.Interfaces.Repository;
+using LangApp.Core.Interfaces.Services;
 using LangApp.Core.Models;
 using MediatR;
 
@@ -22,15 +22,17 @@ public class CreateBaseWordCommandHandler(IBaseWordRepository repository)
         //var entity = mapper.Map<BaseWord>(request.NewWord);
         var entity = new BaseWord
         {
-            NormalizedWord = request.NewWord.NormalizedWord
+            NormalizedWord = TextNormalizer.ToNormalized(request.NewWord.NormalizedWord),
+            DisplayWord = TextNormalizer.ToDisplay(request.NewWord.NormalizedWord)
         };
-        var noralizedWord = WordService.NormalizedWord(entity);
-        var existingWord = await repository.GetBaseWordByNameAsync(noralizedWord.NormalizedWord);
+        //var noralizedWord = WordService.NormalizedWord(entity);
+
+        var existingWord = await repository.GetBaseWordByNameAsync(entity.NormalizedWord);
         if (existingWord != null)
         {
             throw new ConflictException($"Word '{existingWord.NormalizedWord}' already exists.");
         }
-        return await repository.CreateBaseWordAsync(noralizedWord);
+        return await repository.CreateBaseWordAsync(entity);
     }
 }
 

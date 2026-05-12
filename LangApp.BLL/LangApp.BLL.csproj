@@ -16,4 +16,8 @@
     <ProjectReference Include="..\LangApp.DAL\LangApp.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Words\Services\" />
+  </ItemGroup>
+
 </Project>
