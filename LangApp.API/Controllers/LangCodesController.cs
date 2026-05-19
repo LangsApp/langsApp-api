@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LangApp.API.Controllers.Admin;
+namespace LangApp.API.Controllers;
 
 
 [Route("api/[controller]")]
