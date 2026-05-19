@@ -11,9 +11,10 @@ public class Progress
     public Guid Id { get; set; }
     public string? UserId { get; set; }
     public Guid WordId { get; set; }
+    public Guid LangCodeId { get; set; }
     public Guid StageId { get; set; }
-
     public User? User { get; set; }
     public BaseWord? Word { get; set; }
+    public Languages? LangCode { get; set; }
     public Stage? Stage { get; set; }    
 }

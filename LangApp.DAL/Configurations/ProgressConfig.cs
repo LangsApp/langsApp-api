@@ -28,7 +28,13 @@ internal class ProgressConfig : IEntityTypeConfiguration<Progress>
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasIndex(p => new { p.UserId, p.WordId, p.StageId })
+        builder.HasOne(l => l.LangCode)    
+                .WithMany()
+                .HasForeignKey(p => p.LangCodeId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(p => new { p.UserId, p.WordId, p.LangCodeId, p.StageId })
                .IsUnique();
 
     }

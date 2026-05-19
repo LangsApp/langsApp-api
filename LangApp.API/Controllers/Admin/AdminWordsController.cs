@@ -3,10 +3,10 @@ using LangApp.BLL.Words.DTOs;
 using LangApp.Core.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 
 
-namespace LangApp.API.Controllers;
+namespace LangApp.API.Controllers.Admin;
 [Authorize(Roles = UserRoles.SuperAdmin)] 
 [Route("api/[controller]")]
 [ApiController]

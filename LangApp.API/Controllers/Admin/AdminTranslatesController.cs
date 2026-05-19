@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LangApp.API.Controllers;
+namespace LangApp.API.Controllers.Admin;
 
 [Authorize(Roles = UserRoles.SuperAdmin)]
 [Route("api/[controller]")]
