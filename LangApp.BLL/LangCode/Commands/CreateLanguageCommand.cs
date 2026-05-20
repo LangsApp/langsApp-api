@@ -41,6 +41,6 @@ public class CreateLanguageCommandHandler(ILangCodeRepository repository)
         {
             throw new ConflictException("This language already exists.");
         }
-            return await repository.CreateLanguageAsync(entity);
+            return await repository.CreateLanguageAsync(normalizedLangCode);
     }
 }

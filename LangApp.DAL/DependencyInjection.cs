@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.AddScoped<ILangCodeRepository, LangCodeRepository>();
         services.AddScoped<ITranslateRepository, TranslateRepository>();
         services.AddScoped<ILessonRepository, LessonRepository>();
+        services.AddScoped<IStageRepository, StageRepository>();
         //services.AddScoped<IAuthService, AuthService>();
         //services.AddScoped<ICategoryRepository, CategoryRepository>();
         //services.AddScoped<ILanguagesRepository, LanguagesRepository>();
