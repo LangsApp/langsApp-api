@@ -33,4 +33,25 @@ public class LessonController(ISender sender, ILogger<LessonController> _logger)
         _logger.LogInformation("Successfully started the lesson.");
         return Ok(result);
     }
+
+    [HttpPost("answer")]
+    public async Task<IActionResult> CheckAndswerAsync([FromBody] CheckAnswerCommand command)
+    {
+        _logger.LogInformation("Received request to check an answer.");
+
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+        var commandWithUser = command with 
+        { UserId = userId ?? throw new UnauthorizedAccessException() }; // <- тимчасове
+                                                                    //рішення. Бо потрібно буде давати можливість
+                                                                    //гостям заходити
+        var result = await sender.Send(commandWithUser);
+        if (result is null)
+        {
+            _logger.LogError("Failed to check the answer.");
+            return BadRequest("Failed to check the answer.");
+        }
+        _logger.LogInformation("Successfully checked the answer.");
+        return Ok(result);
+    }
 }

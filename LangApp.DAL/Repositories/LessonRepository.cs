@@ -25,22 +25,6 @@ namespace LangApp.DAL.Repositories
                 .Where(t => baseWords.Select(b => b.Id).Contains(t.WordId))
                 .ToListAsync();
 
-            //var wordsFrom = lessonWords
-            //    .Where(t => t.LanguageId == langFrom.Id)
-            //    .Select(t => t.DisplayTranslatedText)
-            //    .ToList();
-
-            //var wordsTo = lessonWords
-            //    .Where(t => t.LanguageId == langTo.Id)
-            //    .Select(t => t.DisplayTranslatedText)
-            //    .ToList();
-
-            //var result = new 
-            //{
-            //    wordsFrom,
-            //    wordsTo
-            //};
-
             return translates;
         }
     }

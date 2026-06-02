@@ -23,4 +23,12 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
         await dBContext.SaveChangesAsync();
         return newTranslates;
     }
+
+    public async Task<List<Guid>> GetCorrectIDsAnswersAsync(List<Guid> wordIds)
+    {
+        return await dBContext.Translate
+            .Where(t => wordIds.Contains(t.WordId))
+            .Select(t => t.WordId)
+            .ToListAsync();
+    }
 }

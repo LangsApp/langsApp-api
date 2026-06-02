@@ -33,29 +33,24 @@ namespace LangApp.BLL.Lesson.Command
             var translates = await lessonRepository
                 .GetLessonWordsAsync(langCodeTo, request.UserId);
 
-            //var wordsFrom = translates.Where(t => t.LanguageId == langCodeFrom.Id)
-            //        .Select(t => t.DisplayTranslatedText)
-            //        .ToList();
 
-            //var wordsTo = translates.Where(t => t.LanguageId == langCodeTo.Id)
-            //        .Where(t => t.WordId == )
-            //        .Select(t => t.DisplayTranslatedText)
-            //        .ToList();
+            //var pairs = translates
+            //.GroupBy(t => t.WordId)
+            //.Select(g => new
+            //{
+            //    WordFrom = g.FirstOrDefault(t => t.LanguageId == langCodeFrom.Id)!.DisplayTranslatedText,
 
-            var pairs = translates
-            .GroupBy(t => t.WordId)
-            .Select(g => new
-            {
-                WordFrom = g.FirstOrDefault(t => t.LanguageId == langCodeFrom.Id)!.DisplayTranslatedText,
-
-                WordTo = g.FirstOrDefault(t => t.LanguageId == langCodeTo.Id)!.WordId
-            })
-            .ToList();
+            //    WordIds = g.FirstOrDefault(t => t.LanguageId == langCodeTo.Id)!.WordId
+            //})
+            //.ToList();
 
             var response = new WordsForLessonDTO
             {
-                WordsFrom = pairs.Select(p => p.WordFrom).ToList(),
-                WordsTo = pairs.Select(p => p.WordTo).ToList(),
+                WordsFrom = translates.GroupBy(t => t.WordId).Select(g =>
+                                      g.FirstOrDefault(t => t.LanguageId == langCodeFrom.Id)?
+                                      .DisplayTranslatedText ?? string.Empty).ToList(),
+
+                //WordIds = pairs.Select(p => p.WordIds).ToList(),
 
                 Message = translates.Count > 0 ? "Words for lesson prepared successfully." :
                                             "No words found for the lesson."
