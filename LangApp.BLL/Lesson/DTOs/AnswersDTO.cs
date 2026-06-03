@@ -8,7 +8,7 @@ namespace LangApp.BLL.Lesson.DTOs
 {
     public class AnswersDTO
     {
-        public Guid WordId { get; set; }
+        public string Question { get; set; } = string.Empty;
         public string UserAnswer { get; set; } = string.Empty;
     }
 }

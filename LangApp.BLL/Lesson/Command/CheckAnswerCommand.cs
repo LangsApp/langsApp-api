@@ -16,29 +16,30 @@ namespace LangApp.BLL.Lesson.Command
     {
         public async Task<CheckAnswerResultDTO> Handle(CheckAnswerCommand request, CancellationToken cancellationToken)
         {
-            var wordIdsAnswers = request.Answers.Select(x => x.WordId).ToList();
+            //var wordIdsAnswers = request.Answers.Select(x => x.WordId).ToList();
 
-            var BaseWordIds = await translateRepository.GetCorrectIDsAnswersAsync(wordIdsAnswers);
+            //var BaseWordIds = await translateRepository.GetCorrectIDsAnswersAsync(wordIdsAnswers);
 
             var uncorrectAnswers = new List<AnswersDTO>();
 
             var correctAnswers = new List<AnswersDTO>();
 
+            var correctAnswerWords = await translateRepository
+                .GetAnswersByQuestionsAsync(request.Answers.Select(x => x.Question).ToList());
+
             foreach (var answer in request.Answers)
             {
-                if (!BaseWordIds.Contains(answer.WordId))
-                {
-                    uncorrectAnswers.Add(answer);
-                }
-                else
+                if(correctAnswerWords.Any(t => t.NormalizedTranslatedText
+                .Equals(answer.UserAnswer, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     correctAnswers.Add(answer);
                 }
+                else
+                {
+                    uncorrectAnswers.Add(answer);
+                }
             }
 
-            // Тут має бути логіка перевірки відповіді користувача.
-            // Наприклад, можна отримати правильну відповідь з бази даних і порівняти її з відповіддю користувача.
-            // Поки що повертаємо заглушку.
             return new CheckAnswerResultDTO
             {
                 CorrectAnswers = correctAnswers,
