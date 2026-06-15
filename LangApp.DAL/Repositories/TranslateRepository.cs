@@ -32,10 +32,15 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
             .ToListAsync();
     }
 
-    public async Task<List<Translate>> GetAnswersByQuestionsAsync(List<string> questions)
+    public async Task<List<Translate>> GetAnswersByQuestionsAsync(List<string> questions, Languages langFrom)
     {
         var normalizedQuestions = questions.Select(q => q.Trim().ToLower()).ToList();
 
-        return null;
+
+        var correctAnswers = await dBContext.Translate
+            .Where(t => normalizedQuestions.Contains(t.NormalizedTranslatedText) && langFrom.Id == t.LanguageId)
+            .ToListAsync();
+        
+        return correctAnswers;
     }
 }
