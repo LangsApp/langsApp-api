@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.Lesson.Command
 {
-    public record CheckAnswerCommand(string UserId, List<AnswersDTO> Answers, string langFrom) : IRequest<CheckAnswerResultDTO>;
+    public record CheckAnswerCommand(string UserId, List<AnswersDTO> Answers, string langTo) : IRequest<CheckAnswerResultDTO>;
 
     public class CheckAnswerCommandHandler(
         ITranslateRepository translateRepository,
@@ -21,17 +21,16 @@ namespace LangApp.BLL.Lesson.Command
 
             var correctAnswers = new List<AnswersDTO>();
 
-            var langFromId = await langCodeRepository.GetLangCodeByCodeAsync(request.langFrom)
-                ?? throw new Exception($"Language code '{request.langFrom}' not found.");
+            var langFromId = await langCodeRepository.GetLangCodeByCodeAsync(request.langTo)
+                ?? throw new Exception($"Language code '{request.langTo}' not found.");
             
             var correctAnswerWords = await translateRepository
                 .GetAnswersByQuestionsAsync(request.Answers.Select(x => x.Question).ToList(), langFromId);
-            //закінчив CheckAnswerCommand і припускаю, що перевірка відповідей буде відпрацьовувати правильно.
-            //Потрібно наступного разу як я сяду за ноут, перевірити як воно працює у свагері
+            
             foreach (var answer in request.Answers)
             {
-                if(correctAnswerWords.Any(t => t.NormalizedTranslatedText
-                .Equals(answer.UserAnswer, StringComparison.CurrentCultureIgnoreCase)))
+                if(correctAnswerWords.Any(t =>
+                t.Equals(answer.UserAnswer, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     correctAnswers.Add(answer);
                 }

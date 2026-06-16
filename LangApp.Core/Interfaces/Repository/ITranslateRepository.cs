@@ -12,6 +12,6 @@ namespace LangApp.Core.Interfaces.Repository
         Task<ICollection<Translate>> GetAllTranslatesAsync();
         Task<List<Translate>> AddListTranslatesAsync(List<Translate> newTranslates);
         Task<List<Guid>> GetCorrectIDsAnswersAsync(List<Guid> wordIds);
-        Task<List<Translate>> GetAnswersByQuestionsAsync(List<string> questions, Languages langFrom);
+        Task<List<string>> GetAnswersByQuestionsAsync(List<string> questions, Languages langTo);
     }
 }
