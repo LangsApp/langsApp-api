@@ -1,4 +1,5 @@
 ﻿using LangApp.Core.Models;
+using LangApp.Core.QueryResults;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace LangApp.Core.Interfaces.Repository
 {
     public interface ILessonRepository
     {
-        Task<ICollection<Translate>> GetLessonWordsAsync(Languages langTo, string userId);
+        Task<LessonWordsResult> GetLessonWordsAsync(Languages langTo, string userId);
     }
 }
