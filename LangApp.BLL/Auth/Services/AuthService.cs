@@ -54,10 +54,14 @@ namespace LangApp.BLL.Auth.Services
                 _logger.LogInformation("User {Email} logged in successfully.", loginDTO.Email);
                 var authClaims = new List<Claim>
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email!),
-                    new Claim("userId", user.Id)
+                    //new Claim(JwtRegisteredClaimNames.Sub, user.UserName!),
+                    //new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    //new Claim(JwtRegisteredClaimNames.Email, user.Email!),
+                    //new Claim("userId", user.Id)
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName!),
+                    new Claim(ClaimTypes.Email, user.Email!),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
                 };
 
                 var userRoles = await _userManager.GetRolesAsync(user);

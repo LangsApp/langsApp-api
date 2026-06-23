@@ -21,7 +21,7 @@ namespace LangApp.DAL.Repositories
 
         public async Task<List<Stage>> GetAllStagesAsync()
         {
-            throw new NotImplementedException();
+            return await dBContext.Stage.ToListAsync();
         }
 
         public Task<Stage?> GetStageByNameAsync(string stageName)

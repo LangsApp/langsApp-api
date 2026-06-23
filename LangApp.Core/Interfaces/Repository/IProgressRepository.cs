@@ -10,5 +10,6 @@ namespace LangApp.Core.Interfaces.Repository
     public interface IProgressRepository
     {
         Task<Progress> AddProgressAsync(Progress newProgress);
+        Task<List<Progress>> AddListProgressAsync (List<Progress> newProgress);
     }
 }
