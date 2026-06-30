@@ -13,7 +13,8 @@ namespace LangApp.BLL.Lesson.Command
 
     public class CheckAnswerCommandHandler(
         ITranslateRepository translateRepository,
-        ILangCodeRepository langCodeRepository) : IRequestHandler<CheckAnswerCommand, CheckAnswerResultDTO>
+        ILangCodeRepository langCodeRepository,
+        IProgressRepository progressRepository) : IRequestHandler<CheckAnswerCommand, CheckAnswerResultDTO>
     {
         public async Task<CheckAnswerResultDTO> Handle(CheckAnswerCommand request, CancellationToken cancellationToken)
         {
@@ -21,16 +22,16 @@ namespace LangApp.BLL.Lesson.Command
 
             var correctAnswers = new List<AnswersDTO>();
 
-            var langFromId = await langCodeRepository.GetLangCodeByCodeAsync(request.langTo)
+            var langToId = await langCodeRepository.GetLangCodeByCodeAsync(request.langTo)
                 ?? throw new Exception($"Language code '{request.langTo}' not found.");
             
             var correctAnswerWords = await translateRepository
-                .GetAnswersByQuestionsAsync(request.Answers.Select(x => x.Question).ToList(), langFromId);
+                .GetAnswersByQuestionsAsync(request.Answers.Select(x => x.Question).ToList(), langToId);
             
             foreach (var answer in request.Answers)
             {
                 if(correctAnswerWords.Any(t =>
-                t.Equals(answer.UserAnswer, StringComparison.CurrentCultureIgnoreCase)))
+                t.NormalizedTranslatedText.Equals(answer.UserAnswer, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     correctAnswers.Add(answer);
                 }
@@ -39,6 +40,9 @@ namespace LangApp.BLL.Lesson.Command
                     uncorrectAnswers.Add(answer);
                 }
             }
+            
+            await progressRepository.AchieveStageAsync(correctAnswers.Select(a => a.UserAnswer).ToList(), 
+                                                       request.UserId, langToId.Id);
 
             return new CheckAnswerResultDTO
             {
