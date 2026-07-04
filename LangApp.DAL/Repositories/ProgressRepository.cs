@@ -60,5 +60,13 @@ namespace LangApp.DAL.Repositories
 
             return await dBContext.Progress.Where(p => p.UserId == userId && p.LangCodeId == langId).ToListAsync();
         }
+
+        public async Task<List<Progress>> GetUserProgressAsync(string userId, Guid langId)
+        {
+            return await dBContext.Progress
+                .Where(p => p.UserId == userId && p.LangCodeId == langId)
+                .Include(p => p.Stage)
+                .ToListAsync();
+        }
     }
 }

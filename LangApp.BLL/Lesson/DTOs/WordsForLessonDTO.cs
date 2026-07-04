@@ -9,7 +9,7 @@ namespace LangApp.BLL.Lesson.DTOs
 {
     public class WordsForLessonDTO
     {
-        public List<string> WordsFrom {  get; set; } = [];
+        public List<LessonWordDTO> WordsFrom {  get; set; } = [];
         //public List<Guid> WordIds { get; set; } = [];
         public string Message { get; set; } = string.Empty;
     }

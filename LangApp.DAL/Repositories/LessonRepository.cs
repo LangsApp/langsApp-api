@@ -16,13 +16,20 @@ namespace LangApp.DAL.Repositories
     {
         public async Task<LessonWordsResult> GetLessonWordsAsync(Languages langTo, string userId)
         {
+            var minOrder = await dbContext.Progress
+                .Where(p =>
+                p.UserId == userId &&
+                p.LangCodeId == langTo.Id &&
+                p.Stage!.Order < 100)
+                .MinAsync(p => (int?)p.Stage!.Order);
+
             var baseWords = await dbContext.BaseWord
                 .Where(w => dbContext.Progress
                 .Any(p => p.WordId == w.Id && p.UserId == userId && p.LangCodeId == langTo.Id
-                && p.Stage!.Order < 100))
+                && p.Stage!.Order == minOrder))
                 .Take(20)
                 .ToListAsync();
-            
+
             var fromProgress = baseWords.Count > 0;
 
             if (baseWords.Count == 0)

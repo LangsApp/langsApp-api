@@ -1,7 +1,6 @@
 ﻿using LangApp.BLL.Lesson.DTOs;
 using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
-using LangApp.DAL.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using System;
@@ -36,18 +35,19 @@ namespace LangApp.BLL.Lesson.Command
             var translates = await lessonRepository
                 .GetLessonWordsAsync(langCodeTo, request.UserId);
 
-            var stages = await stageRepository.GetAllStagesAsync();
-
-            var initialStage = stages.OrderBy(s => s.Order).FirstOrDefault();
-            
-            if (initialStage == null)
-            {
-                _logger.LogError("No stages found in the database.");
-                return new WordsForLessonDTO { Message = "No stages found in the database." };
-            }
 
             if (!translates.FromProgress)
             {
+                var stages = await stageRepository.GetAllStagesAsync();
+
+                var initialStage = stages.OrderBy(s => s.Order).FirstOrDefault();
+
+                if (initialStage == null)
+                {
+                    _logger.LogError("No stages found in the database.");
+                    return new WordsForLessonDTO { Message = "No stages found in the database." };
+                }
+
                 var progresses = translates.Translates
                 .GroupBy(t => t.WordId)
                 .Select(g => new Progress
@@ -62,11 +62,29 @@ namespace LangApp.BLL.Lesson.Command
                 await progressRepository.AddListProgressAsync(progresses);
             }
 
+
+            var lessonWordDTO = new List<LessonWordDTO>();
+            var userProgress = await progressRepository.GetUserProgressAsync(request.UserId, langCodeTo.Id);
+
+            foreach (var translate in translates.Translates.Where(t => t.LanguageId == langCodeFrom.Id))
+            {
+                var wordFrom = translate.DisplayTranslatedText;
+                var stageName = userProgress.Where(p => p.WordId == translate.WordId && p.LangCodeId == langCodeTo.Id)
+                    .Select(p => p.Stage?.StageName).FirstOrDefault() ?? "Unknown Stage";
+
+                lessonWordDTO.Add(new LessonWordDTO
+                {
+                    WordFrom = wordFrom,
+                    StageName = stageName
+                });
+            }
+
             var response = new WordsForLessonDTO
             {
-                WordsFrom = translates.Translates.GroupBy(t => t.WordId).Select(g =>
-                                      g.FirstOrDefault(t => t.LanguageId == langCodeFrom.Id)?
-                                      .DisplayTranslatedText ?? string.Empty).ToList(),
+                WordsFrom = lessonWordDTO.ToList(),
+                //WordsFrom = translates.Translates.GroupBy(t => t.WordId).Select(g =>
+                //                      g.FirstOrDefault(t => t.LanguageId == langCodeFrom.Id)?
+                //                      .DisplayTranslatedText ?? string.Empty).ToList(),
 
 
                 Message = translates.Translates.Count > 0 ? "Words for lesson prepared successfully." :
