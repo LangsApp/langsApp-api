@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.Lesson.Command
 {
-    public record PrepareLessonCommand(string LangFrom, string LangTo, string UserId) : IRequest<WordsForLessonDTO>;
+    public record PrepareLessonCommand(string lerningLang, string NativeLang, string UserId) : IRequest<WordsForLessonDTO>;
 
     public class PrepareLessonCommandHandler(
         ILessonRepository lessonRepository,
@@ -22,18 +22,18 @@ namespace LangApp.BLL.Lesson.Command
     {
         public async Task<WordsForLessonDTO> Handle(PrepareLessonCommand request, CancellationToken cancellationToken)
         {
-            var langCodeFrom = await langCodeRepository.GetLangCodeByCodeAsync(request.LangFrom);
-            var langCodeTo = await langCodeRepository.GetLangCodeByCodeAsync(request.LangTo);
+            var lerningLang = await langCodeRepository.GetLangCodeByCodeAsync(request.lerningLang);
+            var nativeLang = await langCodeRepository.GetLangCodeByCodeAsync(request.NativeLang);
 
-            if (langCodeFrom == null || langCodeTo == null)
+            if (lerningLang == null || nativeLang == null)
             {
-                _logger.LogError("Language code {LangFrom} or {LangTo} not found.", request.LangFrom, request.LangTo);
-                return new WordsForLessonDTO { Message = 
-                    $"Language code {request.LangFrom} or {request.LangTo} not found." };
+                _logger.LogError("Language code {LangFrom} or {LangTo} not found.", request.lerningLang, request.NativeLang);
+                return new WordsForLessonDTO { Message =
+                    $"Language code {request.lerningLang} or {request.NativeLang} not found." };
             }
 
             var translates = await lessonRepository
-                .GetLessonWordsAsync(langCodeTo, request.UserId);
+                .GetLessonWordsAsync(nativeLang, request.UserId);
 
 
             if (!translates.FromProgress)
@@ -54,7 +54,7 @@ namespace LangApp.BLL.Lesson.Command
                 {
                     UserId = request.UserId,
                     WordId = g.Key,
-                    LangCodeId = langCodeTo.Id,
+                    LangCodeId = nativeLang.Id,
                     StageId = initialStage.Id
                 })
                 .ToList();
@@ -64,12 +64,12 @@ namespace LangApp.BLL.Lesson.Command
 
 
             var lessonWordDTO = new List<LessonWordDTO>();
-            var userProgress = await progressRepository.GetUserProgressAsync(request.UserId, langCodeTo.Id);
+            var userProgress = await progressRepository.GetUserProgressAsync(request.UserId, nativeLang.Id);
 
-            foreach (var translate in translates.Translates.Where(t => t.LanguageId == langCodeFrom.Id))
+            foreach (var translate in translates.Translates.Where(t => t.LanguageId == lerningLang.Id))
             {
                 var wordFrom = translate.DisplayTranslatedText;
-                var stageName = userProgress.Where(p => p.WordId == translate.WordId && p.LangCodeId == langCodeTo.Id)
+                var stageName = userProgress.Where(p => p.WordId == translate.WordId && p.LangCodeId == nativeLang.Id)
                     .Select(p => p.Stage?.StageName).FirstOrDefault() ?? "Unknown Stage";
 
                 lessonWordDTO.Add(new LessonWordDTO

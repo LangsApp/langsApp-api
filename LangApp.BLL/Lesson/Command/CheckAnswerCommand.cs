@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.Lesson.Command
 {
-    public record CheckAnswerCommand(string UserId, List<AnswersDTO> Answers, string langTo) : IRequest<CheckAnswerResultDTO>;
+    public record CheckAnswerCommand(string UserId, List<AnswersDTO> Answers, string NativeLang) : IRequest<CheckAnswerResultDTO>;
 
     public class CheckAnswerCommandHandler(
         ITranslateRepository translateRepository,
@@ -22,11 +22,11 @@ namespace LangApp.BLL.Lesson.Command
 
             var correctAnswers = new List<AnswersDTO>();
 
-            var langToId = await langCodeRepository.GetLangCodeByCodeAsync(request.langTo)
-                ?? throw new Exception($"Language code '{request.langTo}' not found.");
-            
+            var nativeLangId = await langCodeRepository.GetLangCodeByCodeAsync(request.NativeLang)
+                ?? throw new Exception($"Language code '{request.NativeLang}' not found.");
+
             var correctAnswerWords = await translateRepository
-                .GetAnswersByQuestionsAsync(request.Answers.Select(x => x.Question).ToList(), langToId);
+                .GetAnswersByQuestionsAsync(request.Answers.Select(x => x.Question).ToList(), nativeLangId);
             
             foreach (var answer in request.Answers)
             {
@@ -41,8 +41,12 @@ namespace LangApp.BLL.Lesson.Command
                 }
             }
             
-            await progressRepository.AchieveStageAsync(correctAnswers.Select(a => a.UserAnswer).ToList(), 
-                                                       request.UserId, langToId.Id);
+            if(correctAnswers.Count > 0)
+            {
+                await progressRepository.AchieveStageAsync(correctAnswers.Select(a => a.UserAnswer).ToList(),
+                                                      request.UserId, nativeLangId.Id);
+            }
+               
 
             return new CheckAnswerResultDTO
             {

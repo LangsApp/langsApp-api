@@ -11,7 +11,7 @@ namespace LangApp.Core.Interfaces.Repository
     {
         Task<Progress> AddProgressAsync(Progress newProgress);
         Task<List<Progress>> AddListProgressAsync (List<Progress> newProgress);
-        Task<List<Progress>> AchieveStageAsync(List<string> userAnswers, string userId, Guid langId);
+        Task<List<Progress>> AchieveStageAsync(List<string> userAnswers, string userId, Guid nativeLangId);
 
         Task<List<Progress>> GetUserProgressAsync(string userId, Guid langId);
     }

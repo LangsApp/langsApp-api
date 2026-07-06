@@ -25,15 +25,15 @@ namespace LangApp.DAL.Repositories
             return newProgresses;
         }
 
-        public async Task<List<Progress>> AchieveStageAsync(List<string> userAnswers, string userId, Guid langId)
+        public async Task<List<Progress>> AchieveStageAsync(List<string> userAnswers, string userId, Guid nativeLangId)
         {
             var normalizedUserAnswers = userAnswers.Select(q => q.Trim().ToLower()).ToList();
 
             var translates = await dBContext.Translate
-                .Where(t => t.LanguageId == langId && normalizedUserAnswers.Contains(t.NormalizedTranslatedText))
+                .Where(t => t.LanguageId == nativeLangId && normalizedUserAnswers.Contains(t.NormalizedTranslatedText))
                 .ToListAsync();
 
-            var userProgress = await dBContext.Progress.Where(p => p.UserId == userId && p.LangCodeId == langId && translates.Select(t => t.WordId).Contains(p.WordId))
+            var userProgress = await dBContext.Progress.Where(p => p.UserId == userId && p.LangCodeId == nativeLangId && translates.Select(t => t.WordId).Contains(p.WordId))
                 .ToListAsync();
 
 
@@ -58,7 +58,7 @@ namespace LangApp.DAL.Repositories
 
             await dBContext.SaveChangesAsync();
 
-            return await dBContext.Progress.Where(p => p.UserId == userId && p.LangCodeId == langId).ToListAsync();
+            return await dBContext.Progress.Where(p => p.UserId == userId && p.LangCodeId == nativeLangId).ToListAsync();
         }
 
         public async Task<List<Progress>> GetUserProgressAsync(string userId, Guid langId)
