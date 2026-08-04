@@ -31,7 +31,7 @@ The project follows Clean Architecture principles:
 Tests are not implemented yet.
 
 ## CI/CD
-CI will be added later using GitHub Actions.
+GitHub Actions builds the application on pushes and pull requests to `main` and `dev`.
 
 ## Project status
 In active development
