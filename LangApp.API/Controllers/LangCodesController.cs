@@ -1,6 +1,6 @@
 ﻿using LangApp.BLL.LangCode.Commands;
 using LangApp.BLL.LangCode.DTOs;
-using LangApp.BLL.Lesson.Query;
+using LangApp.BLL.LangCode.Query;
 using LangApp.Core.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

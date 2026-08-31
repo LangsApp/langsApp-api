@@ -6,12 +6,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
-namespace LangApp.API.Controllers.Admin;
-[Authorize(Roles = UserRoles.SuperAdmin)] 
+namespace LangApp.API.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
-public class AdminWordsController(ISender sender, ILogger<AdminWordsController> _logger) : ControllerBase
+public class WordsController(ISender sender, ILogger<WordsController> _logger) : ControllerBase
 {
+    [Authorize(Roles = UserRoles.SuperAdmin)]
     [HttpPost("add-word")]
     public async Task<IActionResult> AddWordAsync([FromBody] CreateBaseWordDTO newWord)
     {
@@ -27,6 +28,7 @@ public class AdminWordsController(ISender sender, ILogger<AdminWordsController> 
         return Ok(result);
     }
 
+    [Authorize(Roles = UserRoles.SuperAdmin)]
     [HttpPost("add-list-words")]
     public async Task<IActionResult> AddListWordsByCategoryAsync([FromBody] AddWordsByCategoryDTO newWords)
     {

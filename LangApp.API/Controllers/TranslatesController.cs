@@ -5,13 +5,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LangApp.API.Controllers.Admin;
+namespace LangApp.API.Controllers;
 
-[Authorize(Roles = UserRoles.SuperAdmin)]
+
 [Route("api/[controller]")]
 [ApiController]
-public class AdminTranslatesController(ISender sender, ILogger<AdminTranslatesController> logger) : ControllerBase
+public class TranslatesController(ISender sender, ILogger<TranslatesController> logger) : ControllerBase
 {
+    [Authorize(Roles = UserRoles.SuperAdmin)]
     [HttpPost("create-list-translates")]
     public async Task<IActionResult> CreateListTranslatesAsync()
     {

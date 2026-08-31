@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Lesson\Query\" />
     <Folder Include="Words\Services\" />
   </ItemGroup>
 

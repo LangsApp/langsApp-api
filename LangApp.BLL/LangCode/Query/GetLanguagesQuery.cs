@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangApp.BLL.Lesson.Query
+namespace LangApp.BLL.LangCode.Query
 {
     public record GetLanguagesQuery() : IRequest<ICollection<Languages>>;
     

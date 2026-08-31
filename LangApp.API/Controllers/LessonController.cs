@@ -1,6 +1,5 @@
 ﻿using LangApp.BLL.Lesson.Command;
 using System.Security.Claims;
-using LangApp.BLL.Lesson.Query;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
