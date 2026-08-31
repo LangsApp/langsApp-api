@@ -1,4 +1,5 @@
 ﻿using LangApp.BLL.Validation;
+using LangApp.Core.Interfaces.Services;
 using LangApp.Core.Models;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,8 @@ namespace LangApp.BLL.LangCode.Services
     {
         public static Languages NormalizeLanguage(Languages language)
         {
-            language.Name = char.ToUpper(language.Name[0]) + language.Name.Substring(1).ToLower();
-            language.LangCode = language.LangCode.ToLower();
+            language.Name = TextNormalizer.ToDisplay(language.Name);
+            language.LangCode = TextNormalizer.ToNormalized(language.LangCode);
             return language;
         }
     }
