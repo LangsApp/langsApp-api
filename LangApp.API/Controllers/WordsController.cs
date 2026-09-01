@@ -1,5 +1,6 @@
 using LangApp.BLL.Words.Commands;
 using LangApp.BLL.Words.DTOs;
+using LangApp.BLL.Words.Queries;
 using LangApp.Core.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -43,6 +44,23 @@ public class WordsController(ISender sender, ILogger<WordsController> _logger) :
             return BadRequest("Failed to add words for the specified category.");
         }
         _logger.LogInformation($"Words processed for category: {result.CategoryName}. Added: {result.Message}");
+        return Ok(result);
+    }
+
+    [HttpGet("get-list-words")]
+    public async Task<IActionResult> GetBaseWordsAsync()
+    {
+        _logger.LogInformation("Received request to get available base words.");
+
+        var result = await sender.Send(new GetAllBaseWordsQuery());
+
+        if (result is null)
+        { 
+            _logger.LogError("Failed to get available base words.");
+            return BadRequest("Failed to get available base words.");
+        }
+
+        _logger.LogInformation("Successfully retrieved available base words.");
         return Ok(result);
     }
 }
