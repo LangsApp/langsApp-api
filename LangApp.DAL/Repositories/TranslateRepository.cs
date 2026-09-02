@@ -14,7 +14,10 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
 {
     public async Task<ICollection<Translate>> GetAllTranslatesAsync()
     {
-        return await dBContext.Translate.ToListAsync(); 
+        return await dBContext.Translate
+            .Include(t => t.Word)
+            .Include(t => t.Language)
+            .ToListAsync(); 
     }
 
     public async Task<List<Translate>> AddListTranslatesAsync(List<Translate> newTranslates)

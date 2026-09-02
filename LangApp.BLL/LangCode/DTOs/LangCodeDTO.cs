@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LangApp.BLL.Translations.DTOs
+namespace LangApp.BLL.LangCode.DTOs
 {
     public class LangCodeDTO
     {

@@ -1,4 +1,5 @@
-﻿using LangApp.BLL.Translations.DTOs;
+﻿using LangApp.BLL.LangCode.DTOs;
+using LangApp.BLL.Translations.DTOs;
 using LangApp.BLL.Validation;
 using LangApp.Core.Interfaces.Services;
 using LangApp.Core.Models;

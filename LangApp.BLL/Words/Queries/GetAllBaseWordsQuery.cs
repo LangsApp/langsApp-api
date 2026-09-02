@@ -11,7 +11,7 @@ namespace LangApp.BLL.Words.Queries
 {
     public record GetAllBaseWordsQuery() : IRequest<ICollection<BaseWord>>;
 
-    public class GetAllBaseWordsCommandHandler(IBaseWordRepository baseWordRepo)
+    public class GetAllBaseWordsQueryHandler(IBaseWordRepository baseWordRepo)
         : IRequestHandler<GetAllBaseWordsQuery, ICollection<BaseWord>>
     {
         public async Task<ICollection<BaseWord>> Handle(GetAllBaseWordsQuery request, CancellationToken cancellationToken)
