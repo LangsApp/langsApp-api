@@ -11,4 +11,6 @@ public interface ICategoryRepository
 {
     Task<Category> AddCategoryAsync(Category category);
     Task<Category?> GetCategoryByNameAsync(string categoryName);
+
+    Task<ICollection<Category>> GetAllCategoriesAsync();
 }

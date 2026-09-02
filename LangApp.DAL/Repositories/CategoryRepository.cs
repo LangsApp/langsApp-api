@@ -24,4 +24,9 @@ public class CategoryRepository(LangAppDBContext dbContext) : ICategoryRepositor
     {
         return await dbContext.Category.FirstOrDefaultAsync(c => c.Name == categoryName.ToLower());
     }
+
+    public async Task<ICollection<Category>> GetAllCategoriesAsync()
+    {
+        return await dbContext.Category.ToListAsync();
+    }
 }
