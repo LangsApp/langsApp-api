@@ -9,12 +9,12 @@ using MediatR;
 
 namespace LangApp.BLL.Words.Commands;
 
-public record CreateBaseWordCommand(CreateBaseWordDTO NewWord) : IRequest<BaseWord>;
+public record CreateBaseWordCommand(CreateBaseWordDTO NewWord) : IRequest<CreateBaseWordDTO>;
 
 public class CreateBaseWordCommandHandler(IBaseWordRepository repository) 
-    : IRequestHandler<CreateBaseWordCommand, BaseWord>
+    : IRequestHandler<CreateBaseWordCommand, CreateBaseWordDTO>
 {
-    public async Task<BaseWord> Handle(CreateBaseWordCommand request, CancellationToken cancellationToken)
+    public async Task<CreateBaseWordDTO> Handle(CreateBaseWordCommand request, CancellationToken cancellationToken)
     {   
         if(!TextValidation.IsValidText(request.NewWord.NormalizedWord))
             throw new ArgumentException("Invalid word format.");
@@ -32,7 +32,15 @@ public class CreateBaseWordCommandHandler(IBaseWordRepository repository)
         {
             throw new ConflictException($"Word '{existingWord.NormalizedWord}' already exists.");
         }
-        return await repository.CreateBaseWordAsync(entity);
+
+        var result = await repository.CreateBaseWordAsync(entity);
+
+        var response = new CreateBaseWordDTO
+        {
+            NormalizedWord = result.NormalizedWord
+        };
+
+        return response;
     }
 }
 

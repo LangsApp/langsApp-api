@@ -1,4 +1,5 @@
-﻿using LangApp.Core.Interfaces.Repository;
+﻿using LangApp.BLL.StageManagment.DTOs;
+using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using MediatR;
 using System;
@@ -9,13 +10,21 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.StageManagment.Query
 {
-    public record GetStagesQuery() : IRequest<ICollection<Stage>>;
+    public record GetStagesQuery() : IRequest<ICollection<GetStagesDTO>>;
     public class GetStagesQueryHandler(IStageRepository stageRepository)
-        : IRequestHandler<GetStagesQuery, ICollection<Stage>>
+        : IRequestHandler<GetStagesQuery, ICollection<GetStagesDTO>>
     {
-        public async Task<ICollection<Stage>> Handle(GetStagesQuery request, CancellationToken cancellationToken)
+        public async Task<ICollection<GetStagesDTO>> Handle(GetStagesQuery request, CancellationToken cancellationToken)
         {
-            return await stageRepository.GetAllStagesAsync();
+            var entity = await stageRepository.GetAllStagesAsync();
+
+            var response = entity.Select(s => new GetStagesDTO
+            {
+                Name = s.StageName,
+                Order = s.Order
+            }).ToList();
+
+            return response;
         }
 
     }

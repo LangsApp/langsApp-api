@@ -1,4 +1,5 @@
-﻿using LangApp.Core.Interfaces.Repository;
+﻿using LangApp.BLL.Categories.DTOs;
+using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using MediatR;
 using System;
@@ -9,13 +10,20 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.Categories.Queries
 {
-    public record GetCategoriesQuery() : IRequest<ICollection<Category>>;
+    public record GetCategoriesQuery() : IRequest<ICollection<GetCategoryDTO>>;
     public class GetCategoriesQueryHandler(ICategoryRepository categoryRepository) 
-        : IRequestHandler<GetCategoriesQuery, ICollection<Category>>
+        : IRequestHandler<GetCategoriesQuery, ICollection<GetCategoryDTO>>
     {
-        public async Task<ICollection<Category>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
+        public async Task<ICollection<GetCategoryDTO>> Handle(GetCategoriesQuery request, CancellationToken cancellationToken)
         {
-            return await categoryRepository.GetAllCategoriesAsync();
+            var result = await categoryRepository.GetAllCategoriesAsync();
+
+            var response = result.Select(c => new GetCategoryDTO
+            {
+                Name = c.Name,
+            }).ToList();
+
+            return response;
         }
     }
 }

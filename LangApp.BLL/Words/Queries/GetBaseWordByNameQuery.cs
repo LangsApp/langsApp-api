@@ -1,17 +1,26 @@
-﻿using LangApp.Core.Interfaces.Repository;
+﻿using LangApp.BLL.Words.DTOs;
+using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Models;
 using MediatR;
 
 namespace LangApp.BLL.Words.Queries
 {
-    public record GetBaseWordByNameQuery(string Word) : IRequest<BaseWord>;
+    public record GetBaseWordByNameQuery(string Word) : IRequest<GetBaseWordsDTO>;
 
     public class GetBaseWordQueryHandler(IBaseWordRepository baseWordRepo)
-        : IRequestHandler<GetBaseWordByNameQuery, BaseWord?>
+        : IRequestHandler<GetBaseWordByNameQuery, GetBaseWordsDTO?>
     {
-        public async Task<BaseWord?> Handle(GetBaseWordByNameQuery request, CancellationToken cancellationToken)
+        public async Task<GetBaseWordsDTO?> Handle(GetBaseWordByNameQuery request, CancellationToken cancellationToken)
         {
-            return await baseWordRepo.GetBaseWordByNameAsync(request.Word);
+            var entity = await baseWordRepo.GetBaseWordByNameAsync(request.Word);
+
+            var response = new GetBaseWordsDTO
+            {
+                NormalizedWord = entity!.NormalizedWord,
+                DisplayWord = entity.DisplayWord
+            };
+
+            return response;
         }
     }
 }

@@ -10,12 +10,12 @@ using LangApp.Core.Interfaces.Repository;
 
 namespace LangApp.BLL.LangCode.Commands;
 
-public record CreateLanguageCodeCommand(CreateLangCodeDTO NewLangCode) : IRequest<Languages>;
+public record CreateLanguageCodeCommand(CreateLangCodeDTO NewLangCode) : IRequest<CreateLangCodeDTO>;
 
 public class CreateLanguageCommandHandler(ILangCodeRepository repository) 
-    : IRequestHandler<CreateLanguageCodeCommand, Languages>
+    : IRequestHandler<CreateLanguageCodeCommand, CreateLangCodeDTO>
 {
-    public async Task<Languages> Handle(CreateLanguageCodeCommand request, CancellationToken cancellationToken)
+    public async Task<CreateLangCodeDTO> Handle(CreateLanguageCodeCommand request, CancellationToken cancellationToken)
     {
          
         if (!TextValidation.IsValidText(request.NewLangCode.Name) 
@@ -41,6 +41,14 @@ public class CreateLanguageCommandHandler(ILangCodeRepository repository)
         {
             throw new ConflictException("This language already exists.");
         }
-            return await repository.CreateLanguageAsync(normalizedLangCode);
+        
+        var result = await repository.CreateLanguageAsync(normalizedLangCode);
+
+        var response = new CreateLangCodeDTO
+        {
+            LangCode = result.LangCode,
+            Name = result.Name,
+        };
+        return response;
     }
 }

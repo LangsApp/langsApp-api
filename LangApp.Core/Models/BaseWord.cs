@@ -10,7 +10,7 @@ namespace LangApp.Core.Models
     {
         public Guid Id { get; set; }
         public string NormalizedWord { get; set; } = string.Empty;
-        public string? DisplayWord { get; set; } 
+        public string DisplayWord { get; set; } = string.Empty;
 
         public ICollection<Translate> Translates { get; set; } = [];
         public ICollection<Category> Categories { get; set; } = [];

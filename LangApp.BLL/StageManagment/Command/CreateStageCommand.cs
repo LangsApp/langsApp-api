@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.StageManagment.Command
 {
-    public record CreateStageCommand(CreateStageDTO NewStage) : IRequest<Stage>;
+    public record CreateStageCommand(CreateStageDTO NewStage) : IRequest<CreateStageDTO>;
 
-    public class CreateStageCommandHandler(IStageRepository repository) : IRequestHandler<CreateStageCommand, Stage>
+    public class CreateStageCommandHandler(IStageRepository repository) : IRequestHandler<CreateStageCommand, CreateStageDTO>
     {
-        public async Task<Stage> Handle(CreateStageCommand request, CancellationToken cancellationToken)
+        public async Task<CreateStageDTO> Handle(CreateStageCommand request, CancellationToken cancellationToken)
         {
             if (!TextValidation.IsValidText(request.NewStage.Name))
             {
@@ -35,7 +35,15 @@ namespace LangApp.BLL.StageManagment.Command
                 Order = request.NewStage.Order 
             };
 
-            return await repository.CreateStageAsync(entity);
+            var result = await repository.CreateStageAsync(entity);
+
+            var response = new CreateStageDTO
+            {
+                Name = result.StageName,
+                Order = result.Order
+            };
+
+            return response;
         }
     }
 }
