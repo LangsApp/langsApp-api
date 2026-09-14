@@ -1,5 +1,9 @@
-﻿using LangApp.BLL.Categories.Queries;
+﻿using LangApp.BLL.Categories.Commands;
+using LangApp.BLL.Categories.DTOs;
+using LangApp.BLL.Categories.Queries;
+using LangApp.Core.Auth;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -20,6 +24,22 @@ namespace LangApp.API.Controllers
                 return BadRequest("Failed to get categories.");
             }
             logger.LogInformation("Successfully retrieved categories.");
+            return Ok(result);
+        }
+
+        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [HttpPost("add-category")]
+        public async Task<IActionResult> AddCategoryAsync([FromBody] CreateCategoryDTO newCategory)
+        {
+            logger.LogInformation("Received request to add a new category: {CategoryName}", newCategory.Name);
+            var result = await sender.Send(new CreateCategoryCommand(newCategory));
+            
+            if(result is null)
+            {
+                logger.LogError("Failed to add category: {CategoryName}", newCategory.Name);
+                return BadRequest("Failed to add category.");
+            }
+            logger.LogInformation("Successfully added category: {CategoryName}", newCategory.Name);
             return Ok(result);
         }
     }
