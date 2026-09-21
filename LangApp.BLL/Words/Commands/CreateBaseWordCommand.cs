@@ -16,14 +16,14 @@ public class CreateBaseWordCommandHandler(IBaseWordRepository repository)
 {
     public async Task<CreateBaseWordDTO> Handle(CreateBaseWordCommand request, CancellationToken cancellationToken)
     {   
-        if(!TextValidation.IsValidText(request.NewWord.NormalizedWord))
+        if(!TextValidation.IsValidText(request.NewWord.BaseWord))
             throw new ArgumentException("Invalid word format.");
 
         //var entity = mapper.Map<BaseWord>(request.NewWord);
         var entity = new BaseWord
         {
-            NormalizedWord = TextNormalizer.ToNormalized(request.NewWord.NormalizedWord),
-            DisplayWord = TextNormalizer.ToDisplay(request.NewWord.NormalizedWord)
+            NormalizedWord = TextNormalizer.ToNormalized(request.NewWord.BaseWord),
+            DisplayWord = TextNormalizer.ToDisplay(request.NewWord.BaseWord)
         };
         //var noralizedWord = WordService.NormalizedWord(entity);
 
@@ -37,7 +37,7 @@ public class CreateBaseWordCommandHandler(IBaseWordRepository repository)
 
         var response = new CreateBaseWordDTO
         {
-            NormalizedWord = result.NormalizedWord
+            BaseWord = result.NormalizedWord
         };
 
         return response;

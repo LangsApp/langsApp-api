@@ -21,16 +21,16 @@ public class WordsController(ISender sender, ILogger<WordsController> _logger) :
         if (result is null)
         {
             _logger.LogError("Failed to create a new word with normalized word: {NormalizedWord}", 
-                newWord.NormalizedWord);
+                newWord.BaseWord);
             return BadRequest("Failed to create a new word.");
         }
         _logger.LogInformation("Successfully created a new word with normalized word: {NormalizedWord}", 
-            newWord.NormalizedWord);
+            newWord.BaseWord);
         return Ok(result);
     }
 
     [Authorize(Roles = UserRoles.SuperAdmin)]
-    [HttpPost("add-list-words")]
+    [HttpPost("add-list-words-by-category")]
     public async Task<IActionResult> AddListWordsByCategoryAsync([FromBody] AddWordsByCategoryDTO newWords)
     {
         _logger.LogInformation($"Attempting to add words for category: {newWords.CategoryName} " +

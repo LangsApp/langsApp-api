@@ -25,7 +25,7 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
         var validWords = new List<string>();
         var invalidWords = new List<string>();
 
-        var inputWords = request.NewWords.Words.Select(w => w.NormalizedWord).Distinct().ToList();
+        var inputWords = request.NewWords.Words.Select(w => w.BaseWord).Distinct().ToList();
 
         
         foreach (var word in inputWords)
