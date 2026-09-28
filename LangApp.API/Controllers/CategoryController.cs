@@ -42,5 +42,21 @@ namespace LangApp.API.Controllers
             logger.LogInformation("Successfully added category: {CategoryName}", newCategory.Name);
             return Ok(result);
         }
+
+        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [HttpPut("update-category")]
+        public async Task<IActionResult> UpdateCategoryAsync([FromBody] UpdateCategoryDTO updatedCategory)
+        {
+            logger.LogInformation($"Received request to update category: {updatedCategory.CategoryToEditName}");
+            var result = await sender.Send(new UpdateCategoryCommand(updatedCategory));
+
+            if(result is null)
+            {
+                logger.LogError($"Failed to edit category: {updatedCategory.CategoryToEditName}");
+                return BadRequest("Failed to edit category");
+            }
+            logger.LogInformation($"Successfully updated category: {updatedCategory.EditedCategory}");
+            return Ok(result);
+        }
     }
 }

@@ -29,4 +29,16 @@ public class CategoryRepository(LangAppDBContext dbContext) : ICategoryRepositor
     {
         return await dbContext.Category.ToListAsync();
     }
+
+    public async Task<Category?> GetCategoryByIdAsync(Guid id)
+    {
+        return await dbContext.Category.FirstOrDefaultAsync(c => c.Id == id);
+    }
+
+    public async Task<Category> UpdateCategoryAsync(Category updatedCategory)
+    {
+        dbContext.Category.Update(updatedCategory);
+        await dbContext.SaveChangesAsync();
+        return updatedCategory;
+    }
 }
