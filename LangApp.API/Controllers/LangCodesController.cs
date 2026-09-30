@@ -5,6 +5,7 @@ using LangApp.Core.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace LangApp.API.Controllers;
 
@@ -29,7 +30,6 @@ public class AdminLangCodesController(ISender sender, ILogger<AdminLangCodesCont
     }
 
 
-
     [HttpGet("get-languages")]
     public async Task<IActionResult> GetLanguagesAsync()
     {
@@ -42,6 +42,22 @@ public class AdminLangCodesController(ISender sender, ILogger<AdminLangCodesCont
             return BadRequest("Failed to get available languages.");
         }
         _logger.LogInformation("Successfully retrieved available languages.");
+        return Ok(result);
+    }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpPut("update-language")]
+    public async Task<IActionResult> UpdateLanguageAsync([FromBody] UpdateLanguageDTO updateLanguageDTO)
+    {
+        _logger.LogInformation($"Received request to update language: {updateLanguageDTO.LangCodeToEdit}");
+        var result = await sender.Send(new UpdateLanguageCommand(updateLanguageDTO));
+
+        if(result is null)
+        {
+            _logger.LogError($"Failed to edit language: {updateLanguageDTO.LangCodeToEdit}");
+            return BadRequest("Failed to edit language");
+        }
+        _logger.LogInformation($"Successfully updated language: {updateLanguageDTO.LangCodeToEdit}");
         return Ok(result);
     }
 }
