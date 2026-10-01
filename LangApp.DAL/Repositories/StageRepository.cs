@@ -28,5 +28,12 @@ namespace LangApp.DAL.Repositories
         {
             return dBContext.Stage.FirstOrDefaultAsync(s => s.StageName == stageName);
         }
+
+        public async Task<Stage> UpdateStageAsync(Stage updatedStage)
+        {
+            dBContext.Stage.Update(updatedStage);
+            await dBContext.SaveChangesAsync();
+            return updatedStage;
+        }
     }
 }

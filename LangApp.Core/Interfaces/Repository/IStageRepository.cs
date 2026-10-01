@@ -12,5 +12,6 @@ namespace LangApp.Core.Interfaces.Repository
         Task<Stage> CreateStageAsync(Stage newStage);
         Task<Stage?> GetStageByNameAsync(string stageName);
         Task<List<Stage>> GetAllStagesAsync();
+        Task<Stage> UpdateStageAsync(Stage updatedStage);
     }
 }

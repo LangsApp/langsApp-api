@@ -26,18 +26,27 @@ namespace LangApp.DAL.Repositories
             return await dbContext.Languages.ToListAsync();
         }
 
-        public Task<Languages?> GetLangCodeByCodeAsync(string langCode)
+        public async Task<Languages?> GetLangCodeByCodeAsync(string langCode)
         {
             _logger.LogInformation("Retrieving language by code: {LanguageCode}", langCode);
 
-            return dbContext.Languages.FirstOrDefaultAsync(l => l.LangCode == langCode);
+            return await dbContext.Languages.FirstOrDefaultAsync(l => l.LangCode == langCode);
         }
 
-        public Task<Languages?> GetLangCodeByNameAsync(string langName)
+        public async Task<Languages?> GetLangCodeByNameAsync(string langName)
         {
             _logger.LogInformation("Retrieving language by name: {LanguageName}", langName);
 
-            return dbContext.Languages.FirstOrDefaultAsync(l => l.Name == langName);
+            return await dbContext.Languages.FirstOrDefaultAsync(l => l.Name == langName);
+        }
+
+        public async Task<Languages> UpdateCategoryAsync(Languages updatedLanguage)
+        {
+            _logger.LogInformation($"Updating langCode {updatedLanguage.Name}, {updatedLanguage.LangCode}");
+
+            dbContext.Languages.Update(updatedLanguage);
+            await dbContext.SaveChangesAsync();
+            return updatedLanguage;
         }
     }
 }

@@ -13,5 +13,7 @@ namespace LangApp.Core.Interfaces.Repository
         Task<ICollection<Languages>> GetAllLanguagesAsync();
         Task<Languages?> GetLangCodeByNameAsync(string langName);
         Task<Languages?> GetLangCodeByCodeAsync(string langCode);
+
+        Task<Languages> UpdateCategoryAsync(Languages language);
     }
 }

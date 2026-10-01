@@ -40,4 +40,19 @@ public class StageController(ISender sender, ILogger<AdminLangCodesController> _
         }
         return Ok(result);
     }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpPut("update-stage")]
+    public async Task<IActionResult> UpdateStageAsync([FromBody] UpdateStageDTO updateStageDTO)
+    {
+        _logger.LogInformation($"Received request to update stage: {updateStageDTO.NameToEdit}");
+        var result = await sender.Send(new UpdateStageCommand(updateStageDTO));
+        if (result is null)
+        {
+            _logger.LogError($"Failed to edit stage: {updateStageDTO.NameToEdit}");
+            return BadRequest("Failed to edit stage");
+        }
+        _logger.LogInformation($"Successfully updated stage: {updateStageDTO.EditedName}");
+        return Ok(result);
+    }
 }

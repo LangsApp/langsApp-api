@@ -22,12 +22,31 @@ namespace LangApp.BLL.LangCode.Commands
             {
                 throw new ArgumentException("Invalid language name of code");
             }
-            // краще розбити на дві окремі змінні
-            var normalizedRequest = new
+            
+            var normalizedName = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedName);
+            var normalizedLangCode = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedLangCode);
+
+            var existingCategory = await repository.GetLangCodeByCodeAsync(normalizedLangCode);
+
+            if(existingCategory != null)
             {
-                name = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedName),
-                LangCode = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedLangCode)
-            }; 
+                existingCategory.LangCode = normalizedLangCode;
+                existingCategory.Name = normalizedName;
+
+                var result = await repository.UpdateCategoryAsync(existingCategory);
+
+                var response = new UpdateLanguageDTO
+                {
+                    EditedLangCode = TextNormalizer.ToDisplay(result.LangCode),
+                    EditedName = TextNormalizer.ToDisplay(result.Name)
+                };
+
+                return response;
+            }
+            else
+            {
+                throw new InvalidOperationException("Language to update was not found.");
+            }
         }
     }
 }
