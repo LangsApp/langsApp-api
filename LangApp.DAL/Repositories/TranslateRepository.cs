@@ -50,4 +50,16 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
         
         return correctAnswers;
     }
+
+    public async Task<Translate?> GetTranslateByName(string name)
+    {
+        return await dBContext.Translate.FirstOrDefaultAsync(t => t.NormalizedTranslatedText == name);
+    }
+
+    public async Task<Translate> UpdateTranslateAsync(Translate updatedTranslate)
+    {
+        dBContext.Translate.Update(updatedTranslate);
+        await dBContext.SaveChangesAsync();
+        return updatedTranslate;
+    }
 }

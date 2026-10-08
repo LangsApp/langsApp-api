@@ -13,5 +13,7 @@ namespace LangApp.Core.Interfaces.Repository
         Task<List<Translate>> AddListTranslatesAsync(List<Translate> newTranslates);
         Task<List<Guid>> GetCorrectIDsAnswersAsync(List<Guid> wordIds);
         Task<List<Translate>> GetAnswersByQuestionsAsync(List<string> questions, Languages nativeLang);
+        Task<Translate?> GetTranslateByName(string name);
+        Task<Translate> UpdateTranslateAsync(Translate updatedTranslate);
     }
 }
