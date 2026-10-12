@@ -32,11 +32,13 @@ public class CategoryRepository(LangAppDBContext dbContext) : ICategoryRepositor
 
     public async Task<Category?> GetCategoryByIdAsync(Guid id)
     {
+        Console.WriteLine($"\nRequest to edit Category id: {id}\n");
         return await dbContext.Category.FirstOrDefaultAsync(c => c.Id == id);
     }
 
     public async Task<Category> UpdateCategoryAsync(Category updatedCategory)
     {
+        Console.WriteLine($"\nUpdated category id: {updatedCategory.Id}\n");
         dbContext.Category.Update(updatedCategory);
         await dbContext.SaveChangesAsync();
         return updatedCategory;

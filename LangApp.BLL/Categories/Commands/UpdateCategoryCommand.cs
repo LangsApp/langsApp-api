@@ -25,7 +25,7 @@ namespace LangApp.BLL.Categories.Commands
 
             var normalizedRequest = TextNormalizer.ToNormalized(reqest.UpdateCategory.EditedCategory);
 
-            var existingCategory = await repository.GetCategoryByNameAsync(reqest.UpdateCategory.CategoryToEditName);
+            var existingCategory = await repository.GetCategoryByIdAsync(reqest.UpdateCategory.Id);
 
             if(existingCategory != null)
             {
@@ -34,6 +34,7 @@ namespace LangApp.BLL.Categories.Commands
 
                 var response = new UpdateCategoryDTO
                 {
+                    Id = result.Id,
                     EditedCategory = TextNormalizer.ToDisplay(result.Name),
                 };
 

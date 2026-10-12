@@ -20,6 +20,7 @@ namespace LangApp.BLL.Categories.Queries
 
             var response = result.Select(c => new GetCategoryDTO
             {
+                Id = c.Id,
                 Name = c.Name,
             }).ToList();
 
