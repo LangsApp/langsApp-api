@@ -39,4 +39,11 @@ public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWordRepositor
         var normalizedWords = await dbContext.BaseWord.Select(w => w.NormalizedWord).ToListAsync();
         return [.. normalizedWords];
     }
+
+    public async Task<BaseWord> UpdateBaseWordAsync(BaseWord updatedBaseWord)
+    {
+        dbContext.BaseWord.Update(updatedBaseWord);
+        await dbContext.SaveChangesAsync();
+        return updatedBaseWord;
+    }
 }

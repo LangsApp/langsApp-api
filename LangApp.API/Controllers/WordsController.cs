@@ -1,3 +1,4 @@
+using LangApp.BLL.LangCode.DTOs;
 using LangApp.BLL.Words.Commands;
 using LangApp.BLL.Words.DTOs;
 using LangApp.BLL.Words.Queries;
@@ -61,6 +62,22 @@ public class WordsController(ISender sender, ILogger<WordsController> _logger) :
         }
 
         _logger.LogInformation("Successfully retrieved available base words.");
+        return Ok(result);
+    }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpPut("update-baseWord")]
+    public async Task<IActionResult> UpdateBaseWordAsync([FromBody] UpdateBaseWordDTO updateBaseWordDTO)
+    {
+        _logger.LogInformation($"Received request to update base word: {updateBaseWordDTO.WordToEdit}");
+        var result = await sender.Send(new UpdateBaseWordCommand(updateBaseWordDTO));
+
+        if (result is null)
+        {
+            _logger.LogError($"Failed to edit base word: {updateBaseWordDTO.WordToEdit}");
+            return BadRequest("Failed to edit base word");
+        }
+        _logger.LogInformation($"Successfully updated base word: {updateBaseWordDTO.WordToEdit}");
         return Ok(result);
     }
 }

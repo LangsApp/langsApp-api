@@ -9,4 +9,5 @@ public interface IBaseWordRepository
     Task<BaseWord?> GetBaseWordByNameAsync(string normalizedWord);
     Task<ICollection<BaseWord>> GetAllBaseWordsAsync();
     Task<HashSet<string>> GetAllNormalizedWordsAsync();
+    Task<BaseWord> UpdateBaseWordAsync(BaseWord baseWord);
 }

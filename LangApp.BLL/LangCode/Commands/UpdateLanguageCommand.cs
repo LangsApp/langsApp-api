@@ -20,18 +20,20 @@ namespace LangApp.BLL.LangCode.Commands
             if(!TextValidation.IsValidText(request.UpdateLanguageDTO.EditedName) 
                 && !TextValidation.IsValidText(request.UpdateLanguageDTO.EditedLangCode))
             {
-                throw new ArgumentException("Invalid language name of code");
+                throw new ArgumentException("Invalid language name or code");
             }
             
-            var normalizedName = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedName);
-            var normalizedLangCode = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedLangCode);
+            var normalizedEditedName = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedName);
+            var normalizedEditedLangCode = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedLangCode);
 
-            var existingCategory = await repository.GetLangCodeByCodeAsync(normalizedLangCode);
+            var normalizedLangCodeToEdit = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.LangCodeToEdit);
+
+            var existingCategory = await repository.GetLangCodeByCodeAsync(normalizedLangCodeToEdit);
 
             if(existingCategory != null)
             {
-                existingCategory.LangCode = normalizedLangCode;
-                existingCategory.Name = normalizedName;
+                existingCategory.LangCode = normalizedEditedLangCode;
+                existingCategory.Name = normalizedEditedName;
 
                 var result = await repository.UpdateCategoryAsync(existingCategory);
 
