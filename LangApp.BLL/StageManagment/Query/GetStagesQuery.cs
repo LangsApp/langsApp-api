@@ -20,6 +20,7 @@ namespace LangApp.BLL.StageManagment.Query
 
             var response = entity.Select(s => new GetStagesDTO
             {
+                Id = s.Id,
                 Name = s.StageName,
                 Order = s.Order
             }).ToList();

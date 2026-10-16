@@ -13,5 +13,6 @@ namespace LangApp.Core.Interfaces.Repository
         Task<Stage?> GetStageByNameAsync(string stageName);
         Task<List<Stage>> GetAllStagesAsync();
         Task<Stage> UpdateStageAsync(Stage updatedStage);
+        Task<Stage?> GetStageByIdAsync(Guid stageId);
     }
 }

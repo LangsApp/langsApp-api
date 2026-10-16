@@ -8,6 +8,7 @@ namespace LangApp.BLL.LangCode.DTOs
 {
     public class UpdateLanguageDTO
     {
+        public Guid Id { get; set; }
         public string LangCodeToEdit { get; set; } = string.Empty;
 
         public string EditedName { get; set; } = string.Empty;

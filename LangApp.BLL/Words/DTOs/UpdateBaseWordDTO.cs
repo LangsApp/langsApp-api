@@ -8,6 +8,7 @@ namespace LangApp.BLL.Words.DTOs
 {
     public class UpdateBaseWordDTO
     {
+        public Guid Id { get; set; }
         public string WordToEdit { get; set; } = string.Empty;
         public string EditedWord { get; set; } = string.Empty;
     }

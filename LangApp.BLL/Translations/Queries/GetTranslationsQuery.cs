@@ -20,6 +20,7 @@ namespace LangApp.BLL.Translations.Queries
 
             var response = translates.Select(t => new GetAllTranslationsDTO
             {
+                Id = t.Id,
                 BaseWord = t.Word?.DisplayWord ?? string.Empty,
                 TranslateTo = t.Language?.Name ?? string.Empty,
                 NormalizedTranslatedWord = t.NormalizedTranslatedText ?? string.Empty,

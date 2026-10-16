@@ -22,9 +22,9 @@ namespace LangApp.BLL.Translations.Commands
                 throw new ArgumentException("Invalid translate name");
             }
 
-            var normalizedNameToEdit = TextNormalizer.ToNormalized(request.UpdatedTranslate.TranslateToEdit);
+            //var normalizedNameToEdit = TextNormalizer.ToNormalized(request.UpdatedTranslate.TranslateToEdit);
 
-            var existingTranslate = await repository.GetTranslateByName(normalizedNameToEdit);
+            var existingTranslate = await repository.GetTranslateByIdAsync(request.UpdatedTranslate.Id);
 
             if (existingTranslate != null)
             {
@@ -36,6 +36,7 @@ namespace LangApp.BLL.Translations.Commands
 
                 var response = new UpdateTranslateDTO
                 {
+                    Id = result.Id,
                     TranslateToEdit = request.UpdatedTranslate.TranslateToEdit,
                     EditedTranslate = result.DisplayTranslatedText
                 };

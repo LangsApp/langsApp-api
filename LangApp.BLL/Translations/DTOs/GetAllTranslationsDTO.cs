@@ -8,6 +8,7 @@ namespace LangApp.BLL.Translations.DTOs
 {
     public class GetAllTranslationsDTO
     {
+        public Guid Id { get; set; }
         public string BaseWord { get; set; } = string.Empty;
         public string TranslateTo { get; set; } = string.Empty;
         public string NormalizedTranslatedWord { get; set; } = string.Empty;

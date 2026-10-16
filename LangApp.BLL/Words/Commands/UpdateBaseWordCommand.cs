@@ -25,9 +25,9 @@ namespace LangApp.BLL.Words.Commands
             var normalizedEditedWord = TextNormalizer.ToNormalized(request.UpdateBaseWordDTO.EditedWord);
             var displayedEditedWord = TextNormalizer.ToDisplay(request.UpdateBaseWordDTO.EditedWord);
 
-            var normalizedWordToEdit = TextNormalizer.ToNormalized(request.UpdateBaseWordDTO.WordToEdit);
+            //var normalizedWordToEdit = TextNormalizer.ToNormalized(request.UpdateBaseWordDTO.WordToEdit);
 
-            var existingBaseWord = await repository.GetBaseWordByNameAsync(normalizedWordToEdit);
+            var existingBaseWord = await repository.GetBaseWordByIdAsync(request.UpdateBaseWordDTO.Id);
 
             if(existingBaseWord != null)
             {
@@ -38,6 +38,7 @@ namespace LangApp.BLL.Words.Commands
 
                 var response = new UpdateBaseWordDTO
                 {
+                    Id = result.Id,
                     EditedWord = result.DisplayWord
                 };
 

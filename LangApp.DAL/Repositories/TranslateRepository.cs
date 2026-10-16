@@ -62,4 +62,14 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
         await dBContext.SaveChangesAsync();
         return updatedTranslate;
     }
+
+    public async Task<Translate> GetTranslateByIdAsync(Guid id)
+    {
+        var translate = await dBContext.Translate.FirstOrDefaultAsync(t => t.Id == id);
+        if (translate == null)
+        {
+            throw new InvalidOperationException($"Translate with ID {id} not found.");
+        }
+        return translate;
+    }
 }

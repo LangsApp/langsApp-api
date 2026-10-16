@@ -10,4 +10,5 @@ public interface IBaseWordRepository
     Task<ICollection<BaseWord>> GetAllBaseWordsAsync();
     Task<HashSet<string>> GetAllNormalizedWordsAsync();
     Task<BaseWord> UpdateBaseWordAsync(BaseWord baseWord);
+    Task<BaseWord> GetBaseWordByIdAsync(Guid id);
 }

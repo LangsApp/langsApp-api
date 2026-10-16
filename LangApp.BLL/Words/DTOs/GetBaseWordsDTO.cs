@@ -9,6 +9,7 @@ namespace LangApp.BLL.Words.DTOs
 {
     public class GetBaseWordsDTO
     {
+        public Guid Id { get; set; }
         public string NormalizedWord { get; set; } = string.Empty;
         public string DisplayWord {  get; set; } = string.Empty;
     }

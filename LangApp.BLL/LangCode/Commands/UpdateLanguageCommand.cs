@@ -26,9 +26,9 @@ namespace LangApp.BLL.LangCode.Commands
             var normalizedEditedName = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedName);
             var normalizedEditedLangCode = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.EditedLangCode);
 
-            var normalizedLangCodeToEdit = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.LangCodeToEdit);
+            //var normalizedLangCodeToEdit = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.LangCodeToEdit);
 
-            var existingCategory = await repository.GetLangCodeByCodeAsync(normalizedLangCodeToEdit);
+            var existingCategory = await repository.GetLangCodeByIdAsync(request.UpdateLanguageDTO.Id);
 
             if(existingCategory != null)
             {
@@ -39,6 +39,7 @@ namespace LangApp.BLL.LangCode.Commands
 
                 var response = new UpdateLanguageDTO
                 {
+                    Id = result.Id,
                     EditedLangCode = TextNormalizer.ToDisplay(result.LangCode),
                     EditedName = TextNormalizer.ToDisplay(result.Name)
                 };

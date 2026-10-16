@@ -22,7 +22,7 @@ namespace LangApp.BLL.StageManagment.Command
                 throw new ArgumentException("Invalid category name"); 
             }
 
-            var existingStage = await repository.GetStageByNameAsync(request.UpdateStage.NameToEdit);
+            var existingStage = await repository.GetStageByIdAsync(request.UpdateStage.Id);
 
             if(existingStage != null)
             {
@@ -35,6 +35,7 @@ namespace LangApp.BLL.StageManagment.Command
 
                 var response = new UpdateStageDTO
                 {
+                    Id = result.Id,
                     EditedName = TextNormalizer.ToDisplay(result.StageName),
                     EditedOrder = result.Order,
                     NameToEdit = TextNormalizer.ToDisplay(request.UpdateStage.NameToEdit)

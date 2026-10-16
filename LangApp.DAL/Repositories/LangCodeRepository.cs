@@ -48,5 +48,10 @@ namespace LangApp.DAL.Repositories
             await dbContext.SaveChangesAsync();
             return updatedLanguage;
         }
-    }
+
+        public async Task<Languages?> GetLangCodeByIdAsync(Guid langId)
+        {
+            _logger.LogInformation("Retrieving language by ID: {LanguageId}", langId);
+            return await dbContext.Languages.FirstOrDefaultAsync(l => l.Id == langId);
+        }
 }

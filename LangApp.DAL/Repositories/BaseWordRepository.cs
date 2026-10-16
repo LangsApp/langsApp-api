@@ -46,4 +46,14 @@ public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWordRepositor
         await dbContext.SaveChangesAsync();
         return updatedBaseWord;
     }
+
+    public async Task<BaseWord> GetBaseWordByIdAsync(Guid id)
+    {
+        var baseWord = await dbContext.BaseWord.FirstOrDefaultAsync(w => w.Id == id);
+        if (baseWord == null)
+        {
+            throw new Exception($"BaseWord with ID {id} not found.");
+        }
+        return baseWord;
+    }
 }

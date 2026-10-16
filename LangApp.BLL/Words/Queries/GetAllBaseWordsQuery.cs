@@ -21,6 +21,7 @@ namespace LangApp.BLL.Words.Queries
 
             var response = entity.Select(w => new GetBaseWordsDTO
             {
+                Id = w.Id,
                 NormalizedWord = w.NormalizedWord,
                 DisplayWord = w.DisplayWord
             }).ToList();

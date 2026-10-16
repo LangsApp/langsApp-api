@@ -8,6 +8,7 @@ namespace LangApp.BLL.Translations.DTOs
 {
     public class UpdateTranslateDTO
     {
+        public Guid Id { get; set; }
         public string TranslateToEdit { get; set; } = string.Empty;
         public string EditedTranslate { get; set; } = string.Empty;
     }

@@ -8,6 +8,7 @@ namespace LangApp.BLL.StageManagment.DTOs
 {
     public class UpdateStageDTO
     {
+        public Guid Id { get; set; }
         public int EditedOrder { get; set; }
         public string EditedName { get; set; } = string.Empty;
         public string NameToEdit { get; set; } = string.Empty;

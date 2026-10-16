@@ -22,6 +22,7 @@ namespace LangApp.BLL.LangCode.Query
 
             var response = entity.Select(l => new LangCodeDTO
             {
+                Id = l.Id,
                 Code = l.LangCode,
                 Name = l.Name,
             }).ToList();
