@@ -54,4 +54,5 @@ namespace LangApp.DAL.Repositories
             _logger.LogInformation("Retrieving language by ID: {LanguageId}", langId);
             return await dbContext.Languages.FirstOrDefaultAsync(l => l.Id == langId);
         }
+    }
 }

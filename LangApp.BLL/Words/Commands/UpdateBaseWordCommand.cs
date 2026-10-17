@@ -1,4 +1,5 @@
-﻿using LangApp.BLL.Validation;
+﻿using LangApp.BLL.Translations.Services;
+using LangApp.BLL.Validation;
 using LangApp.BLL.Words.DTOs;
 using LangApp.Core.Interfaces.Repository;
 using LangApp.Core.Interfaces.Services;
@@ -12,7 +13,8 @@ using System.Threading.Tasks;
 namespace LangApp.BLL.Words.Commands
 {
     public record UpdateBaseWordCommand(UpdateBaseWordDTO UpdateBaseWordDTO) : IRequest<UpdateBaseWordDTO>;
-    public class UpdateBaseWordCommandHandler(IBaseWordRepository repository)
+    public class UpdateBaseWordCommandHandler(IBaseWordRepository repository, 
+        UpdateTranslatesByUpdatedBaseWord updateTranslates)
         : IRequestHandler<UpdateBaseWordCommand, UpdateBaseWordDTO>
     {
         public  async Task<UpdateBaseWordDTO> Handle(UpdateBaseWordCommand request, CancellationToken cancellationToken)
@@ -34,12 +36,14 @@ namespace LangApp.BLL.Words.Commands
                 existingBaseWord.NormalizedWord = normalizedEditedWord;
                 existingBaseWord.DisplayWord = displayedEditedWord;
 
-                var result = await repository.UpdateBaseWordAsync(existingBaseWord);
+                var wordResult = await repository.UpdateBaseWordAsync(existingBaseWord);
+
+                await updateTranslates.UpdateForBaseWordAsync(wordResult.Id, wordResult.NormalizedWord, cancellationToken);
 
                 var response = new UpdateBaseWordDTO
                 {
-                    Id = result.Id,
-                    EditedWord = result.DisplayWord
+                    Id = wordResult.Id,
+                    EditedWord = wordResult.DisplayWord
                 };
 
                 return response;

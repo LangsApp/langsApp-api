@@ -17,6 +17,7 @@ public static class DependencyInjection
             configuration.NotificationPublisher = new TaskWhenAllPublisher();
         });
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<UpdateTranslatesByUpdatedBaseWord>();
         services.AddHttpClient<ITranslateService, TranslateService>();
         return services;
     }

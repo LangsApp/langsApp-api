@@ -63,6 +63,13 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
         return updatedTranslate;
     }
 
+    public async Task<List<Translate>> UpdateListTranslatesAsync(List<Translate> updatedTranslates)
+    {
+        dBContext.Translate.UpdateRange(updatedTranslates);
+        await dBContext.SaveChangesAsync();
+        return updatedTranslates;
+    }
+
     public async Task<Translate> GetTranslateByIdAsync(Guid id)
     {
         var translate = await dBContext.Translate.FirstOrDefaultAsync(t => t.Id == id);
@@ -71,5 +78,19 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
             throw new InvalidOperationException($"Translate with ID {id} not found.");
         }
         return translate;
+    }
+
+    public async Task<List<Translate>> GetTranslateByBaseWordIdAsync(Guid baseWordId)
+    {
+        var translates = await dBContext.Translate
+            .Include(t => t.Language)
+            .Where(t => t.WordId == baseWordId)
+            .ToListAsync();
+
+        if(translates == null)
+        {
+            throw new InvalidOperationException("No translates found");
+        }
+        return translates;
     }
 }
