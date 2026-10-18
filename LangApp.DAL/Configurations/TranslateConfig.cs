@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace LangApp.DAL.Configurations;
 
 internal class TranslateConfig : IEntityTypeConfiguration<Translate>
-{
+{//
     public void Configure(EntityTypeBuilder<Translate> builder)
     {
         builder.HasKey(x => x.Id);
