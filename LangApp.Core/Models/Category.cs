@@ -10,5 +10,7 @@ public class Category
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
+    public bool Reviewded { get; set; } = false;
+    public bool Published { get; set; } = false;
     public IEnumerable<BaseWord>? BaseWords { get; set; } = new List<BaseWord>();
 }

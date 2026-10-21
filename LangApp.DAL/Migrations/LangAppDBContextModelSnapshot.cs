@@ -52,6 +52,12 @@ namespace LangApp.DAL.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Reviewded")
+                        .HasColumnType("boolean");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedWord")
@@ -70,6 +76,12 @@ namespace LangApp.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("character varying(50)");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Reviewded")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -94,6 +106,12 @@ namespace LangApp.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Reviewded")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -145,6 +163,12 @@ namespace LangApp.DAL.Migrations
                     b.Property<int>("Order")
                         .HasColumnType("integer");
 
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Reviewded")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("StageName")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -178,6 +202,12 @@ namespace LangApp.DAL.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<bool>("Published")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("Reviewded")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("WordId")
                         .HasColumnType("uuid");
@@ -426,25 +456,25 @@ namespace LangApp.DAL.Migrations
                     b.HasOne("LangApp.Core.Models.Languages", "LangCode")
                         .WithMany()
                         .HasForeignKey("LangCodeId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LangApp.Core.Models.Stage", "Stage")
                         .WithMany()
                         .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LangApp.Core.Models.User", "User")
                         .WithMany("Progresses")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LangApp.Core.Models.BaseWord", "Word")
                         .WithMany()
                         .HasForeignKey("WordId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("LangCode");
