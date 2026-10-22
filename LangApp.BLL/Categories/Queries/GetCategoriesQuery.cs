@@ -22,6 +22,8 @@ namespace LangApp.BLL.Categories.Queries
             {
                 Id = c.Id,
                 Name = c.Name,
+                Published = c.Published,
+                Reviewed = c.Reviewded
             }).ToList();
 
             return response;

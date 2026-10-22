@@ -11,8 +11,8 @@ namespace LangApp.Core.Models
         public Guid Id { get; set; }
         public string NormalizedWord { get; set; } = string.Empty;
         public string DisplayWord { get; set; } = string.Empty;
-        public bool Reviewded { get; set; } = false;
-        public bool Published { get; set; } = false;
+        public bool Reviewed { get; set; }
+        public bool Published { get; set; }
 
         public ICollection<Translate> Translates { get; set; } = [];
         public ICollection<Category> Categories { get; set; } = [];
