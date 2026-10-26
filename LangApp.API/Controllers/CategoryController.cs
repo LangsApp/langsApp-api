@@ -58,5 +58,21 @@ namespace LangApp.API.Controllers
             logger.LogInformation($"Successfully updated category: {updatedCategory.EditedCategory}");
             return Ok(result);
         }
+
+        [Authorize(Roles =UserRoles.SuperAdmin)]
+        [HttpDelete("delete-category/{id}")]
+        public async Task<IActionResult> DeleteCategoryAsync([FromRoute] Guid id)
+        {
+            logger.LogInformation($"Received request to delete category: {id}");
+            var result = await sender.Send(new DeleteCategoryCommand(id));
+
+            if(result is null)
+            {
+                logger.LogError($"Failed to delete category: {id}");
+                return BadRequest("Failed to delete category");
+            }
+            logger.LogInformation($"Successfully deleted category: {id}");
+            return Ok(result);
+        }
     }
 }

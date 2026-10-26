@@ -32,7 +32,7 @@ public class CategoryRepository(LangAppDBContext dbContext) : ICategoryRepositor
 
     public async Task<Category?> GetCategoryByIdAsync(Guid id)
     {
-        Console.WriteLine($"\nRequest to edit Category id: {id}\n");
+        //Console.WriteLine($"\nRequest to edit Category id: {id}\n");
         return await dbContext.Category.FirstOrDefaultAsync(c => c.Id == id);
     }
 
@@ -42,5 +42,12 @@ public class CategoryRepository(LangAppDBContext dbContext) : ICategoryRepositor
         dbContext.Category.Update(updatedCategory);
         await dbContext.SaveChangesAsync();
         return updatedCategory;
+    }
+
+    public async Task<Guid> DeleteCategoryAsync(Category category)
+    {
+        dbContext.Category.Remove(category);
+        await dbContext.SaveChangesAsync();
+        return category.Id;
     }
 }

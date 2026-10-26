@@ -16,4 +16,5 @@ public interface ICategoryRepository
     Task<ICollection<Category>> GetAllCategoriesAsync();
 
     Task<Category> UpdateCategoryAsync(Category category);
+    Task<Guid> DeleteCategoryAsync(Category category);
 }

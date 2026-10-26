@@ -54,5 +54,12 @@ namespace LangApp.DAL.Repositories
             _logger.LogInformation("Retrieving language by ID: {LanguageId}", langId);
             return await dbContext.Languages.FirstOrDefaultAsync(l => l.Id == langId);
         }
+
+        public async Task<Guid> DeleteLanguageAsync(Languages language)
+        {
+            dbContext.Languages.Remove(language);
+            await dbContext.SaveChangesAsync();
+            return language.Id;
+        }
     }
 }

@@ -60,4 +60,21 @@ public class AdminLangCodesController(ISender sender, ILogger<AdminLangCodesCont
         _logger.LogInformation($"Successfully updated language: {updateLanguageDTO.LangCodeToEdit}");
         return Ok(result);
     }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpDelete("delete-language/{id}")]
+    public async Task<IActionResult> DeleteLanguageAsync([FromRoute] Guid id)
+    {
+        _logger.LogInformation($"Recived request to delete language: {id}");
+        var result = await sender.Send(new DeleteLanguageCommand(id));
+
+        if(result is null )
+        {
+            _logger.LogError($"Failed to delete language: {id}");
+            return BadRequest("Failed to delete language");
+        }
+
+        _logger.LogInformation($"Successfully deleted language: {id}");
+        return Ok(result);
+    }
 }
