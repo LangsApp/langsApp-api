@@ -22,7 +22,9 @@ namespace LangApp.BLL.StageManagment.Query
             {
                 Id = s.Id,
                 Name = s.StageName,
-                Order = s.Order
+                Order = s.Order,
+                Reviewed = s.Reviewded,
+                Published = s.Published,
             }).ToList();
 
             return response;

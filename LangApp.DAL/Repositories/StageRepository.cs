@@ -40,5 +40,12 @@ namespace LangApp.DAL.Repositories
         {
             return await dBContext.Stage.FirstOrDefaultAsync(s => s.Id == stageId);
         }
+
+        public async Task<Guid> DeleteStageAsync(Stage stage)
+        {
+            dBContext.Stage.Remove(stage);
+            await dBContext.SaveChangesAsync();
+            return stage.Id;
+        }
     }
 }

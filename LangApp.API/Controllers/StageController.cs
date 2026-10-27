@@ -55,4 +55,20 @@ public class StageController(ISender sender, ILogger<AdminLangCodesController> _
         _logger.LogInformation($"Successfully updated stage: {updateStageDTO.EditedName}");
         return Ok(result);
     }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpDelete("delete-stage/{id}")]
+    public async Task<IActionResult> DeleteStageAsync([FromRoute] Guid id)
+    {
+        _logger.LogInformation($"Received request to delete stage: {id}");
+        var result = await sender.Send(new DeleteStageCommand(id));
+
+        if(result is null)
+        {
+            _logger.LogError($"Failed to delete stage: {id}");
+            return BadRequest("Failed to delete stage");
+        }
+        _logger.LogInformation($"Successfully deleted stage: {id}");
+        return Ok(result);
+    }
 }
