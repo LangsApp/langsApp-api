@@ -23,7 +23,10 @@ namespace LangApp.BLL.Words.Queries
             {
                 Id = w.Id,
                 NormalizedWord = w.NormalizedWord,
-                DisplayWord = w.DisplayWord
+                DisplayWord = w.DisplayWord,
+                Reviewed = w.Reviewed,
+                Published = w.Published
+                
             }).ToList();
 
             return response;

@@ -14,25 +14,25 @@ internal class ProgressConfig : IEntityTypeConfiguration<Progress>
                .WithMany(p => p.Progresses)
                .HasForeignKey(p => p.UserId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(w => w.Word)
                .WithMany()
                .HasForeignKey(p => p.WordId)
                .IsRequired()
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(s => s.Stage)
                 .WithMany()
                 .HasForeignKey(p => p.StageId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(l => l.LangCode)    
                 .WithMany()
                 .HasForeignKey(p => p.LangCodeId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(p => new { p.UserId, p.WordId, p.LangCodeId, p.StageId })
                .IsUnique();

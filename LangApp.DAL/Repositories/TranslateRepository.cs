@@ -93,4 +93,11 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
         }
         return translates;
     }
+
+    public async Task<Guid> DeleteTranslateAsync(Translate translate)
+    {
+        dBContext.Translate.Remove(translate);
+        await dBContext.SaveChangesAsync();
+        return translate.Id;
+    }
 }

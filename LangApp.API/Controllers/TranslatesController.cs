@@ -58,4 +58,20 @@ public class TranslatesController(ISender sender, ILogger<TranslatesController> 
         logger.LogInformation($"Successfully updated translate: {updateTranslateDTO.EditedTranslate}");
         return Ok(result);
     }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpDelete("delete-translate/{id}")]
+    public async Task<IActionResult> DeleteTranslateAsync([FromRoute] Guid id)
+    {
+        logger.LogInformation($"Receiced request to delete translate: {id}");
+        var result = await sender.Send(new DeleteTranslateCommand(id));
+
+        if (result is null)
+        {
+            logger.LogError($"Failed to delete translate: {id}");
+            return BadRequest("Failed to delete translate");
+        }
+        logger.LogInformation($"Successfully deleted translate: {id}");
+        return Ok(result);
+    }
 }

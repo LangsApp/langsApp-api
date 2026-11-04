@@ -10,7 +10,7 @@ public class Translate
     public Guid LanguageId { get; set; }
     public string NormalizedTranslatedText { get; set; } = string.Empty;
     public string DisplayTranslatedText { get; set; } = string.Empty;
-    public bool Reviewded { get; set; } 
+    public bool Reviewed { get; set; } 
     public bool Published { get; set; } 
     public BaseWord? Word { get; set; } 
     public Languages? Language { get; set; }

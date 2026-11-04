@@ -25,6 +25,8 @@ namespace LangApp.BLL.LangCode.Query
                 Id = l.Id,
                 Code = l.LangCode,
                 Name = l.Name,
+                Published = l.Published,
+                Reviewed = l.Reviewded
             }).ToList();
 
             return response;

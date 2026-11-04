@@ -25,6 +25,9 @@ namespace LangApp.BLL.Translations.Queries
                 TranslateTo = t.Language?.Name ?? string.Empty,
                 NormalizedTranslatedWord = t.NormalizedTranslatedText ?? string.Empty,
                 DisplayTranslatedWord = t.DisplayTranslatedText ?? string.Empty,
+                Published = t.Published,
+                Reviewed = t.Reviewed
+
             }).ToList();
 
             return response;

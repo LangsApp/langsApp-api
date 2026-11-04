@@ -11,5 +11,7 @@ namespace LangApp.BLL.LangCode.DTOs
         public Guid Id { get; set; }
         public string Code { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
+        public bool Reviewed { get; set; }
+        public bool Published { get; set; }
     }
 }

@@ -12,5 +12,7 @@ namespace LangApp.BLL.Words.DTOs
         public Guid Id { get; set; }
         public string NormalizedWord { get; set; } = string.Empty;
         public string DisplayWord {  get; set; } = string.Empty;
+        public bool Reviewed { get; set; }
+        public bool Published { get; set; }
     }
 }

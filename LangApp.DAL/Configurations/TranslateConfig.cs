@@ -24,11 +24,11 @@ internal class TranslateConfig : IEntityTypeConfiguration<Translate>
         builder.HasOne(w => w.Word)
                .WithMany(t => t.Translates)
                .HasForeignKey(t => t.WordId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasOne(l => l.Language)
                .WithMany(t => t.Translates)
                .HasForeignKey(t => t.LanguageId)
-               .OnDelete(DeleteBehavior.Cascade);
+               .OnDelete(DeleteBehavior.Restrict);
     }
 }

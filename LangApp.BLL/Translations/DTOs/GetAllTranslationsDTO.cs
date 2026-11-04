@@ -13,5 +13,7 @@ namespace LangApp.BLL.Translations.DTOs
         public string TranslateTo { get; set; } = string.Empty;
         public string NormalizedTranslatedWord { get; set; } = string.Empty;
         public string DisplayTranslatedWord { get; set ; } = string.Empty;
+        public bool Published { get; set; }
+        public bool Reviewed { get; set; }
     }
 }

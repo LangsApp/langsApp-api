@@ -1,3 +1,4 @@
+using LangApp.BLL.Categories.Commands;
 using LangApp.BLL.LangCode.DTOs;
 using LangApp.BLL.Words.Commands;
 using LangApp.BLL.Words.DTOs;
@@ -6,6 +7,7 @@ using LangApp.Core.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 
 namespace LangApp.API.Controllers;
@@ -78,6 +80,22 @@ public class WordsController(ISender sender, ILogger<WordsController> _logger) :
             return BadRequest("Failed to edit base word");
         }
         _logger.LogInformation($"Successfully updated base word: {updateBaseWordDTO.WordToEdit}");
+        return Ok(result);
+    }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpDelete("delete-baseWord/{id}")]
+    public async Task<IActionResult> DeleteBaseWordAsync([FromRoute] Guid id)
+    {
+        _logger.LogInformation($"Received request to delete base word: {id}");
+        var result = await sender.Send(new DeleteBaseWordCommand(id));
+
+        if (result is null)
+        {
+            _logger.LogError($"Failed to delete base word: {id}");
+            return BadRequest("Failed to delete base word");
+        }
+        _logger.LogInformation($"Successfully deleted base word: {id}");
         return Ok(result);
     }
 }

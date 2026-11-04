@@ -55,7 +55,7 @@ namespace LangApp.DAL.Migrations
                     b.Property<bool>("Published")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Reviewded")
+                    b.Property<bool>("Reviewed")
                         .HasColumnType("boolean");
 
                     b.HasKey("Id");
@@ -206,7 +206,7 @@ namespace LangApp.DAL.Migrations
                     b.Property<bool>("Published")
                         .HasColumnType("boolean");
 
-                    b.Property<bool>("Reviewded")
+                    b.Property<bool>("Reviewed")
                         .HasColumnType("boolean");
 
                     b.Property<Guid>("WordId")
@@ -456,25 +456,25 @@ namespace LangApp.DAL.Migrations
                     b.HasOne("LangApp.Core.Models.Languages", "LangCode")
                         .WithMany()
                         .HasForeignKey("LangCodeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("LangApp.Core.Models.Stage", "Stage")
                         .WithMany()
                         .HasForeignKey("StageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("LangApp.Core.Models.User", "User")
                         .WithMany("Progresses")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("LangApp.Core.Models.BaseWord", "Word")
                         .WithMany()
                         .HasForeignKey("WordId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("LangCode");
@@ -491,13 +491,13 @@ namespace LangApp.DAL.Migrations
                     b.HasOne("LangApp.Core.Models.Languages", "Language")
                         .WithMany("Translates")
                         .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("LangApp.Core.Models.BaseWord", "Word")
                         .WithMany("Translates")
                         .HasForeignKey("WordId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Language");

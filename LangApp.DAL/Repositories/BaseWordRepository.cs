@@ -56,4 +56,11 @@ public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWordRepositor
         }
         return baseWord;
     }
+
+    public async Task<Guid> DeleteBaseWordAsync(BaseWord baseWord)
+    {
+        dbContext.BaseWord.Remove(baseWord);
+        await dbContext.SaveChangesAsync();
+        return baseWord.Id;
+    }
 }
