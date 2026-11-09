@@ -28,20 +28,27 @@ namespace LangApp.BLL.Translations.Commands
 
             if (existingTranslate != null)
             {
-
-                existingTranslate.NormalizedTranslatedText = TextNormalizer.ToNormalized(request.UpdatedTranslate.EditedTranslate);
-                existingTranslate.DisplayTranslatedText = TextNormalizer.ToDisplay(request.UpdatedTranslate.EditedTranslate);
-
-                var result = await repository.UpdateTranslateAsync(existingTranslate);
-
-                var response = new UpdateTranslateDTO
+                if(!existingTranslate.Published)
                 {
-                    Id = result.Id,
-                    TranslateToEdit = request.UpdatedTranslate.TranslateToEdit,
-                    EditedTranslate = result.DisplayTranslatedText
-                };
+                    existingTranslate.NormalizedTranslatedText = TextNormalizer.ToNormalized(request.UpdatedTranslate.EditedTranslate);
+                    existingTranslate.DisplayTranslatedText = TextNormalizer.ToDisplay(request.UpdatedTranslate.EditedTranslate);
 
-                return response;
+                    var result = await repository.UpdateTranslateAsync(existingTranslate);
+
+                    var response = new UpdateTranslateDTO
+                    {
+                        Id = result.Id,
+                        TranslateToEdit = request.UpdatedTranslate.TranslateToEdit,
+                        EditedTranslate = result.DisplayTranslatedText
+                    };
+
+                    return response;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot update a published translate.");
+                }
+               
             }
             else
             {

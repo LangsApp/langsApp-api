@@ -17,5 +17,7 @@ namespace LangApp.Core.Interfaces.Repository
 
         Task<Languages> UpdateCategoryAsync(Languages language);
         Task<Guid> DeleteLanguageAsync(Languages language);
+        Task<ICollection<Languages>> GetLanguagesByIdsAsync(IEnumerable<Guid> ids);
+        Task<ICollection<Languages>> ReviewedOrPublishedLanguagesAsync(IEnumerable<Languages> languages);
     }
 }

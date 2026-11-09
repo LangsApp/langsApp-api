@@ -100,4 +100,16 @@ public class TranslateRepository(LangAppDBContext dBContext) : ITranslateReposit
         await dBContext.SaveChangesAsync();
         return translate.Id;
     }
+
+    public async Task<ICollection<Translate>> GetTranslatesByIdsAsync(IEnumerable<Guid> ids)
+    {
+        return await dBContext.Translate.Where(t => ids.Contains(t.Id)).ToListAsync();
+    }
+
+    public async Task<ICollection<Translate>> ReviewedOrPublishedTranslatesAsync(IEnumerable<Translate> translates)
+    {
+        dBContext.Translate.UpdateRange(translates);
+        await dBContext.SaveChangesAsync();
+        return translates.ToList();
+    }
 }

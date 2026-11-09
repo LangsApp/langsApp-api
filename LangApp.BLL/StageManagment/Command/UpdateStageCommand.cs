@@ -26,22 +26,30 @@ namespace LangApp.BLL.StageManagment.Command
 
             if(existingStage != null)
             {
-                var normalizedRequest = TextNormalizer.ToNormalized(request.UpdateStage.EditedName);
-
-                existingStage.StageName = normalizedRequest;
-                existingStage.Order = request.UpdateStage.EditedOrder;
-
-                var result = await repository.UpdateStageAsync(existingStage);
-
-                var response = new UpdateStageDTO
+                if(!existingStage.Published)
                 {
-                    Id = result.Id,
-                    EditedName = TextNormalizer.ToDisplay(result.StageName),
-                    EditedOrder = result.Order,
-                    NameToEdit = TextNormalizer.ToDisplay(request.UpdateStage.NameToEdit)
-                };
+                    var normalizedRequest = TextNormalizer.ToNormalized(request.UpdateStage.EditedName);
 
-                return response;
+                    existingStage.StageName = normalizedRequest;
+                    existingStage.Order = request.UpdateStage.EditedOrder;
+
+                    var result = await repository.UpdateStageAsync(existingStage);
+
+                    var response = new UpdateStageDTO
+                    {
+                        Id = result.Id,
+                        EditedName = TextNormalizer.ToDisplay(result.StageName),
+                        EditedOrder = result.Order,
+                        NameToEdit = TextNormalizer.ToDisplay(request.UpdateStage.NameToEdit)
+                    };
+
+                    return response;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot update a published stage.");
+                }
+                
             }
             else
             {

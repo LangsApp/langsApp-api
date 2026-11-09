@@ -1,4 +1,6 @@
-﻿using LangApp.BLL.LangCode.Commands;
+﻿using LangApp.BLL.Categories.Commands;
+using LangApp.BLL.DTOs;
+using LangApp.BLL.LangCode.Commands;
 using LangApp.BLL.LangCode.DTOs;
 using LangApp.BLL.LangCode.Query;
 using LangApp.Core.Auth;
@@ -75,6 +77,21 @@ public class AdminLangCodesController(ISender sender, ILogger<AdminLangCodesCont
         }
 
         _logger.LogInformation($"Successfully deleted language: {id}");
+        return Ok(result);
+    }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpPut("publish-languages")]
+    public async Task<IActionResult> PublishLanguagesAsync([FromBody] List<ReviewAndPublishDTO> updateLanguageStatusDTO)
+    {
+        _logger.LogInformation("Received request to publish languages.");
+        var result = await sender.Send(new ReviewOrPublishLanguageCommand(updateLanguageStatusDTO));
+        if(result is null)
+        { 
+            _logger.LogError("Failed to update status of languages");
+            return BadRequest("Failed to update status of languages");
+        }
+        _logger.LogInformation("Successfully updated status of languages");
         return Ok(result);
     }
 }

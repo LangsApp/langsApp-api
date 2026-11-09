@@ -47,5 +47,17 @@ namespace LangApp.DAL.Repositories
             await dBContext.SaveChangesAsync();
             return stage.Id;
         }
+
+        public async Task<ICollection<Stage>> GetStagesByIdsAsync(IEnumerable<Guid> ids)
+        {
+            return await dBContext.Stage.Where(s => ids.Contains(s.Id)).ToListAsync();
+        }
+
+        public async Task<ICollection<Stage>> ReviewedOrPublishedStagesAsync(IEnumerable<Stage> stages)
+        {
+           dBContext.Stage.UpdateRange(stages);
+           await dBContext.SaveChangesAsync();
+           return stages.ToList();
+        }
     }
 }

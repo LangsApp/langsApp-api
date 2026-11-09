@@ -29,16 +29,24 @@ namespace LangApp.BLL.Categories.Commands
 
             if(existingCategory != null)
             {
-                existingCategory.Name = normalizedRequest;
-                var result = await repository.UpdateCategoryAsync(existingCategory);
-
-                var response = new UpdateCategoryDTO
+                if(!existingCategory.Published)
                 {
-                    Id = result.Id,
-                    EditedCategory = TextNormalizer.ToDisplay(result.Name),
-                };
+                    existingCategory.Name = normalizedRequest;
+                    var result = await repository.UpdateCategoryAsync(existingCategory);
 
-                return response;
+                    var response = new UpdateCategoryDTO
+                    {
+                        Id = result.Id,
+                        EditedCategory = TextNormalizer.ToDisplay(result.Name),
+                    };
+
+                    return response;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot update a published category.");
+                }
+
             }
             else
             {

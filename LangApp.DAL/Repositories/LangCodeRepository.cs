@@ -61,5 +61,17 @@ namespace LangApp.DAL.Repositories
             await dbContext.SaveChangesAsync();
             return language.Id;
         }
+
+        public async Task<ICollection<Languages>> GetLanguagesByIdsAsync(IEnumerable<Guid> ids)
+        {
+            return await dbContext.Languages.Where(l => ids.Contains(l.Id)).ToListAsync();
+        }
+
+        public async Task<ICollection<Languages>> ReviewedOrPublishedLanguagesAsync(IEnumerable<Languages> languages)
+        {
+            dbContext.Languages.UpdateRange(languages);
+            await dbContext.SaveChangesAsync();
+            return languages.ToList();
+        }
     }
 }

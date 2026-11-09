@@ -1,4 +1,6 @@
-﻿using LangApp.BLL.Translations.Commands;
+﻿using LangApp.BLL.Categories.Commands;
+using LangApp.BLL.DTOs;
+using LangApp.BLL.Translations.Commands;
 using LangApp.BLL.Translations.DTOs;
 using LangApp.BLL.Translations.Queries;
 using LangApp.Core.Auth;
@@ -72,6 +74,22 @@ public class TranslatesController(ISender sender, ILogger<TranslatesController> 
             return BadRequest("Failed to delete translate");
         }
         logger.LogInformation($"Successfully deleted translate: {id}");
+        return Ok(result);
+    }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpPut("publish-translates")]
+    public async Task<IActionResult> PublishTranslatesAsync([FromBody] List<ReviewAndPublishDTO> reviewAndPublishDTO)
+    {
+        logger.LogInformation("Received request to publish translates");
+        var result = await sender.Send(new ReviewOrPublishTranslateCommand(reviewAndPublishDTO));
+
+        if(result is null)
+        {
+            logger.LogError("Failed to update status of translates");
+            return BadRequest("Failed to update status translates");
+        }
+        logger.LogInformation("Successfully updated status of translates");
         return Ok(result);
     }
 }

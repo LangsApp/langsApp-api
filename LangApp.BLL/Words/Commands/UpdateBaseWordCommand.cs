@@ -33,20 +33,28 @@ namespace LangApp.BLL.Words.Commands
 
             if(existingBaseWord != null)
             {
-                existingBaseWord.NormalizedWord = normalizedEditedWord;
-                existingBaseWord.DisplayWord = displayedEditedWord;
-
-                var wordResult = await repository.UpdateBaseWordAsync(existingBaseWord);
-
-                await updateTranslates.UpdateForBaseWordAsync(wordResult.Id, wordResult.NormalizedWord, cancellationToken);
-
-                var response = new UpdateBaseWordDTO
+                if(!existingBaseWord.Published)
                 {
-                    Id = wordResult.Id,
-                    EditedWord = wordResult.DisplayWord
-                };
+                    existingBaseWord.NormalizedWord = normalizedEditedWord;
+                    existingBaseWord.DisplayWord = displayedEditedWord;
 
-                return response;
+                    var wordResult = await repository.UpdateBaseWordAsync(existingBaseWord);
+
+                    await updateTranslates.UpdateForBaseWordAsync(wordResult.Id, wordResult.NormalizedWord, cancellationToken);
+
+                    var response = new UpdateBaseWordDTO
+                    {
+                        Id = wordResult.Id,
+                        EditedWord = wordResult.DisplayWord
+                    };
+
+                    return response;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot update a published base word.");
+                }
+               
             }
             else
             {

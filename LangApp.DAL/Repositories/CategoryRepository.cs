@@ -50,4 +50,16 @@ public class CategoryRepository(LangAppDBContext dbContext) : ICategoryRepositor
         await dbContext.SaveChangesAsync();
         return category.Id;
     }
+
+    public async Task<ICollection<Category>> GetCategoriesByIdsAsync(IEnumerable<Guid> ids)
+    {
+        return await dbContext.Category.Where(c => ids.Contains(c.Id)).ToListAsync();
+    }
+
+    public async Task<ICollection<Category>> ReviewedOrPublishedCategoriesAsync(IEnumerable<Category> categories)
+    {
+        dbContext.Category.UpdateRange(categories);
+        await dbContext.SaveChangesAsync();
+        return categories.ToList();
+    }
 }

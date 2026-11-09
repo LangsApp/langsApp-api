@@ -19,5 +19,7 @@ namespace LangApp.Core.Interfaces.Repository
         Task<Translate> GetTranslateByIdAsync(Guid id);
         Task<List<Translate>> GetTranslateByBaseWordIdAsync(Guid baseWordId);
         Task<Guid> DeleteTranslateAsync(Translate translate);
+        Task<ICollection<Translate>> GetTranslatesByIdsAsync(IEnumerable<Guid> ids);
+        Task<ICollection<Translate>> ReviewedOrPublishedTranslatesAsync(IEnumerable<Translate> translates);
     }
 }

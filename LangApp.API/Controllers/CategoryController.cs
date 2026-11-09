@@ -1,6 +1,7 @@
 ﻿using LangApp.BLL.Categories.Commands;
 using LangApp.BLL.Categories.DTOs;
 using LangApp.BLL.Categories.Queries;
+using LangApp.BLL.DTOs;
 using LangApp.Core.Auth;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -72,6 +73,22 @@ namespace LangApp.API.Controllers
                 return BadRequest("Failed to delete category");
             }
             logger.LogInformation($"Successfully deleted category: {id}");
+            return Ok(result);
+        }
+
+        [Authorize(Roles = UserRoles.SuperAdmin)]
+        [HttpPut("publish-categories")]
+        public async Task<IActionResult> PublishCategoriesAsync([FromBody] List<ReviewAndPublishDTO> reviewAndPublishDTO)
+        {
+            logger.LogInformation("Received request to publish categories.");
+            var result = await sender.Send(new ReviewOrPublishCategoryCommand(reviewAndPublishDTO));
+
+            if (result is null)
+            {
+                logger.LogError("Failed to update status of categories");
+                return BadRequest("Failed to update status category");
+            }
+            logger.LogInformation($"Successfully updated status of categories");
             return Ok(result);
         }
     }

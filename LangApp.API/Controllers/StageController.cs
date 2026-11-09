@@ -1,4 +1,5 @@
-﻿using LangApp.BLL.LangCode.DTOs;
+﻿using LangApp.BLL.DTOs;
+using LangApp.BLL.LangCode.DTOs;
 using LangApp.BLL.StageManagment.Command;
 using LangApp.BLL.StageManagment.DTOs;
 using LangApp.BLL.StageManagment.Query;
@@ -69,6 +70,21 @@ public class StageController(ISender sender, ILogger<AdminLangCodesController> _
             return BadRequest("Failed to delete stage");
         }
         _logger.LogInformation($"Successfully deleted stage: {id}");
+        return Ok(result);
+    }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpPut("publish-stages")]
+    public async Task<IActionResult> PublishStagesAsync([FromBody] List<ReviewAndPublishDTO> reviewAndPublishDTO)
+    {
+        _logger.LogInformation("Received request to publish stages.");
+        var result = await sender.Send(new ReviewOrPublishStageCommand(reviewAndPublishDTO));
+        if (result is null)
+        {
+            _logger.LogError("Failed to publish stages.");
+            return BadRequest("Failed to publish stages.");
+        }
+        _logger.LogInformation("Successfully published stages.");
         return Ok(result);
     }
 }

@@ -15,5 +15,7 @@ namespace LangApp.Core.Interfaces.Repository
         Task<Stage> UpdateStageAsync(Stage updatedStage);
         Task<Stage?> GetStageByIdAsync(Guid stageId);
         Task<Guid> DeleteStageAsync(Stage stage);
+        Task<ICollection<Stage>> GetStagesByIdsAsync(IEnumerable<Guid> ids);
+        Task<ICollection<Stage>> ReviewedOrPublishedStagesAsync(IEnumerable<Stage> stages);
     }
 }

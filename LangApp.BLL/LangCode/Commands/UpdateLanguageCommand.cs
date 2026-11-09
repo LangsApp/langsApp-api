@@ -28,23 +28,31 @@ namespace LangApp.BLL.LangCode.Commands
 
             //var normalizedLangCodeToEdit = TextNormalizer.ToNormalized(request.UpdateLanguageDTO.LangCodeToEdit);
 
-            var existingCategory = await repository.GetLangCodeByIdAsync(request.UpdateLanguageDTO.Id);
+            var existingLang = await repository.GetLangCodeByIdAsync(request.UpdateLanguageDTO.Id);
 
-            if(existingCategory != null)
+            if(existingLang != null)
             {
-                existingCategory.LangCode = normalizedEditedLangCode;
-                existingCategory.Name = normalizedEditedName;
-
-                var result = await repository.UpdateCategoryAsync(existingCategory);
-
-                var response = new UpdateLanguageDTO
+                if(!existingLang.Published)
                 {
-                    Id = result.Id,
-                    EditedLangCode = TextNormalizer.ToDisplay(result.LangCode),
-                    EditedName = TextNormalizer.ToDisplay(result.Name)
-                };
+                    existingLang.LangCode = normalizedEditedLangCode;
+                    existingLang.Name = normalizedEditedName;
 
-                return response;
+                    var result = await repository.UpdateCategoryAsync(existingLang);
+
+                    var response = new UpdateLanguageDTO
+                    {
+                        Id = result.Id,
+                        EditedLangCode = TextNormalizer.ToDisplay(result.LangCode),
+                        EditedName = TextNormalizer.ToDisplay(result.Name)
+                    };
+
+                    return response;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Cannot update a published language.");
+                }
+
             }
             else
             {
