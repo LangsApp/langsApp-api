@@ -63,4 +63,16 @@ public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWordRepositor
         await dbContext.SaveChangesAsync();
         return baseWord.Id;
     }
+
+    public async Task<ICollection<BaseWord>> GetCollectionBaseWordsByIdsAsync(IEnumerable<Guid> ids)
+    {
+        return await dbContext.BaseWord.Where(bw => ids.Contains(bw.Id)).ToListAsync();
+    }
+
+    public async Task<ICollection<BaseWord>> ReviewedOrPublishedBaseWordsAsync(IEnumerable<BaseWord> baseWords)
+    {
+        dbContext.BaseWord.UpdateRange(baseWords);
+        await dbContext.SaveChangesAsync();
+        return baseWords.ToList();
+    }
 }

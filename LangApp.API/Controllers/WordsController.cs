@@ -1,4 +1,5 @@
 using LangApp.BLL.Categories.Commands;
+using LangApp.BLL.DTOs;
 using LangApp.BLL.LangCode.DTOs;
 using LangApp.BLL.Words.Commands;
 using LangApp.BLL.Words.DTOs;
@@ -96,6 +97,22 @@ public class WordsController(ISender sender, ILogger<WordsController> _logger) :
             return BadRequest("Failed to delete base word");
         }
         _logger.LogInformation($"Successfully deleted base word: {id}");
+        return Ok(result);
+    }
+
+    [Authorize(Roles = UserRoles.SuperAdmin)]
+    [HttpPut("publish-base-words")]
+    public async Task<IActionResult> PublishBaseWordsAsync([FromBody] List<ReviewAndPublishDTO> reviewAndPublishDTO)
+    {
+        _logger.LogInformation("Received request to publish base words");
+        var result = await sender.Send(new ReviewOrPublishBaseWordCommand(reviewAndPublishDTO));
+
+        if(result is null)
+        {
+            _logger.LogError("Failed to update status of base words");
+            return BadRequest("Failed to update status of base words");
+        }
+        _logger.LogInformation("Successfully updated status of base words");
         return Ok(result);
     }
 }

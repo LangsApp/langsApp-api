@@ -39,6 +39,11 @@ namespace LangApp.BLL.Categories.Commands
                 var dto = request.ReviewAndPublish.FirstOrDefault(x => x.Id == item.Id);
                 if (dto != null)
                 {
+                    if (item.Published && !dto.Published)
+                    {
+                        throw new InvalidOperationException(
+                            "Published item cannot be unpublished.");
+                    }
                     item.Reviewded = dto.Reviewed;
                     item.Published = dto.Published;
                 }

@@ -12,4 +12,6 @@ public interface IBaseWordRepository
     Task<BaseWord> UpdateBaseWordAsync(BaseWord baseWord);
     Task<BaseWord> GetBaseWordByIdAsync(Guid id);
     Task<Guid> DeleteBaseWordAsync(BaseWord baseWord);
+    Task<ICollection<BaseWord>> GetCollectionBaseWordsByIdsAsync(IEnumerable<Guid> ids);
+    Task<ICollection<BaseWord>> ReviewedOrPublishedBaseWordsAsync(IEnumerable<BaseWord> baseWords);
 }
