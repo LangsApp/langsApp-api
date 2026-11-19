@@ -11,6 +11,7 @@ namespace LangApp.Core.Interfaces.Repository
     {
         Task<Languages> CreateLanguageAsync(Languages language);
         Task<ICollection<Languages>> GetAllLanguagesAsync();
+        Task<ICollection<Languages>> GetAllPublishedLanguagesAsync();
         Task<Languages?> GetLangCodeByNameAsync(string langName);
         Task<Languages?> GetLangCodeByCodeAsync(string langCode);
         Task<Languages?> GetLangCodeByIdAsync(Guid langId);

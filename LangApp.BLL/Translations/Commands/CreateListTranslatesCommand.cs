@@ -22,10 +22,10 @@ namespace LangApp.BLL.Translations.Commands
         public async Task<CreateListTranslatesResponseDTO> Handle(CreateListTranslatesCommand reqest, 
             CancellationToken cancellationToken)
         {
-            var existingLangCodes = await langCodeRepo.GetAllLanguagesAsync();
-            var existingBaseWords = await baseWordRepo.GetAllBaseWordsAsync();
+            var existingPublishedLangCodes = await langCodeRepo.GetAllPublishedLanguagesAsync();
+            var existingPublishedBaseWords = await baseWordRepo.GetAllPublishedBaseWordsAsync();
 
-            if (existingLangCodes.Count == 0 || existingBaseWords.Count == 0)
+            if (existingPublishedLangCodes.Count == 0 || existingPublishedBaseWords.Count == 0)
             {
                 logger.LogInformation("No new translates were created because " +
                     "there are no base words or language codes");
@@ -52,9 +52,9 @@ namespace LangApp.BLL.Translations.Commands
             var codes = await libreTranslateService.GetSupportedLanguagesAsync(cancellationToken);
 
 
-            foreach (var baseWord in existingBaseWords)
+            foreach (var baseWord in existingPublishedBaseWords)
             {
-                foreach (var langCode in existingLangCodes)
+                foreach (var langCode in existingPublishedLangCodes)
                 {
                     if (existingPairs.Contains((baseWord.Id, langCode.Id)))
                         continue;

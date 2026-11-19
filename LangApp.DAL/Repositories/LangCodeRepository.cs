@@ -26,6 +26,13 @@ namespace LangApp.DAL.Repositories
             return await dbContext.Languages.ToListAsync();
         }
 
+        public async Task<ICollection<Languages>> GetAllPublishedLanguagesAsync()
+        {
+            _logger.LogInformation("Retrieving all published languages from the database.");
+
+            return await dbContext.Languages.Where(l => l.Published).ToListAsync();
+        }
+
         public async Task<Languages?> GetLangCodeByCodeAsync(string langCode)
         {
             _logger.LogInformation("Retrieving language by code: {LanguageCode}", langCode);

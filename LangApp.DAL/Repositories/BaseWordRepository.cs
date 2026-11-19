@@ -34,6 +34,11 @@ public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWordRepositor
         return await dbContext.BaseWord.ToListAsync();
     }
 
+    public async Task<ICollection<BaseWord>> GetAllPublishedBaseWordsAsync()
+    {
+        return await dbContext.BaseWord.Where(w => w.Published).ToListAsync();
+    }
+
     public async Task<HashSet<string>> GetAllNormalizedWordsAsync()
     {
         var normalizedWords = await dbContext.BaseWord.Select(w => w.NormalizedWord).ToListAsync();

@@ -8,6 +8,7 @@ public interface IBaseWordRepository
     Task <List<BaseWord>> AddListWordsAsync(List<BaseWord> newWords);
     Task<BaseWord?> GetBaseWordByNameAsync(string normalizedWord);
     Task<ICollection<BaseWord>> GetAllBaseWordsAsync();
+    Task<ICollection<BaseWord>> GetAllPublishedBaseWordsAsync();
     Task<HashSet<string>> GetAllNormalizedWordsAsync();
     Task<BaseWord> UpdateBaseWordAsync(BaseWord baseWord);
     Task<BaseWord> GetBaseWordByIdAsync(Guid id);
