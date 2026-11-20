@@ -9,8 +9,8 @@ public class WordsProfile : Profile
 {
     public WordsProfile()
     {
-        CreateMap<BaseWord, CreateBaseWordDTO>();
-        CreateMap<CreateBaseWordDTO, BaseWord>();
+        CreateMap<BaseWord, CreateBaseWordsDTO>();
+        CreateMap<CreateBaseWordsDTO, BaseWord>();
         CreateMap<BaseWord, AddWordsByCategoryDTO>();
     }
 }

@@ -15,4 +15,5 @@ public interface IBaseWordRepository
     Task<Guid> DeleteBaseWordAsync(BaseWord baseWord);
     Task<ICollection<BaseWord>> GetCollectionBaseWordsByIdsAsync(IEnumerable<Guid> ids);
     Task<ICollection<BaseWord>> ReviewedOrPublishedBaseWordsAsync(IEnumerable<BaseWord> baseWords);
+    Task<HashSet<string>> GetExistingNormalizedWordsAsync(IEnumerable<BaseWord> normalizedWords);
 }

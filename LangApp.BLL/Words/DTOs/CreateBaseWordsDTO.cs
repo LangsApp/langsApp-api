@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace LangApp.BLL.Words.DTOs;
 
-public class CreateBaseWordDTO
+public class CreateBaseWordsDTO
 {
-    public string BaseWord { get; set; } = null!;
+    public List<string> BaseWord { get; set; } = new List<string>();
+    public string Message { get; set; } = string.Empty;
 }
