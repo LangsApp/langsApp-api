@@ -80,4 +80,13 @@ public class BaseWordRepository(LangAppDBContext dbContext) : IBaseWordRepositor
         await dbContext.SaveChangesAsync();
         return baseWords.ToList();
     }
+
+    public async Task<HashSet<string>> GetExistingNormalizedWordsAsync(IEnumerable<BaseWord> normalizedWords)
+    {
+        var existingNormalizedWords = await dbContext.BaseWord
+            .Where(bw => normalizedWords.Select(nw => nw.NormalizedWord).Contains(bw.NormalizedWord))
+            .Select(bw => bw.NormalizedWord)
+            .ToListAsync();
+        return new HashSet<string>(existingNormalizedWords);
+    }
 }

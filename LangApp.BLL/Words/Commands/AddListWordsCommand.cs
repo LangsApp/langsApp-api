@@ -24,8 +24,9 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
 
         var validWords = new List<string>();
         var invalidWords = new List<string>();
+        var message = new List<string>();
 
-        var inputWords = request.NewWords.Words.Select(w => w.BaseWord).Distinct().ToList();
+        var inputWords = request.NewWords.Words.Select(w => w.Trim()).Distinct().ToList();
 
         
         foreach (var word in inputWords)
@@ -37,6 +38,7 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
             }
             validWords.Add(word);
         }
+
         var category = await categoryRepo.GetCategoryByNameAsync(request.NewWords.CategoryName);
 
         if (category == null)
@@ -62,7 +64,7 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
                 DisplayWord = TextNormalizer.ToDisplay(word)
             }));
 
-        var existWords = await baseWordRepo.GetAllNormalizedWordsAsync();
+        var existWords = await baseWordRepo.GetExistingNormalizedWordsAsync(normalizedWords);
 
         var wordsToInsert = normalizedWords.Where(w => !existWords.Contains(w.NormalizedWord)).ToList();
 
@@ -82,7 +84,7 @@ public class AddListWordsCommandHandler(IBaseWordRepository baseWordRepo, ICateg
         
         await baseWordRepo.AddListWordsAsync(wordsToInsert);
 
-        var message = new List<string>();
+       
 
         if(skipedWords.Count > 0)
         {

@@ -16,23 +16,24 @@ namespace LangApp.API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class WordsController(ISender sender, ILogger<WordsController> _logger) : ControllerBase
-{
+{ 
     [Authorize(Roles = UserRoles.SuperAdmin)]
-    [HttpPost("add-word")]
-    public async Task<IActionResult> AddWordAsync([FromBody] CreateBaseWordDTO newWord)
+    [HttpPost("add-words")]
+    public async Task<IActionResult> AddWordAsync([FromBody] CreateBaseWordsDTO newWords)
     {
-        var result = await sender.Send(new CreateBaseWordCommand(newWord));
+        _logger.LogInformation("Attempting to create a words without category");
+        var result = await sender.Send(new CreateBaseWordsCommand(newWords));
         if (result is null)
         {
             _logger.LogError("Failed to create a new word with normalized word: {NormalizedWord}", 
-                newWord.BaseWord);
+                newWords.BaseWord);
             return BadRequest("Failed to create a new word.");
         }
         _logger.LogInformation("Successfully created a new word with normalized word: {NormalizedWord}", 
-            newWord.BaseWord);
+            newWords.BaseWord);
         return Ok(result);
     }
-
+    
     [Authorize(Roles = UserRoles.SuperAdmin)]
     [HttpPost("add-list-words-by-category")]
     public async Task<IActionResult> AddListWordsByCategoryAsync([FromBody] AddWordsByCategoryDTO newWords)

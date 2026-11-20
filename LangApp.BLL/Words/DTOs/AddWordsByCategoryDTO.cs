@@ -10,6 +10,6 @@ namespace LangApp.BLL.Words.DTOs
     public class AddWordsByCategoryDTO
     {
         public string CategoryName { get; set; } = string.Empty;
-        public List<CreateBaseWordDTO> Words { get; set; } = new List<CreateBaseWordDTO>();
+        public List<string> Words { get; set; } = new List<string>();
     }
 }
